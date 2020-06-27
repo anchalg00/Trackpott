@@ -1,0 +1,113 @@
+{% extends 'loggedbase.html' %}
+{% block link %} <a href="{% url 'ganttchart' project_list_first.id %}" class="nav-link" target="_blank">{% endblock %}
+
+{% load mathfilters %}
+{% block title %}
+Manage Materials
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body p-0">
+                <h5 class="pt-2 pl-2"><i class="fa fa-search"></i> Search Material</h5>
+                <hr>
+                <form class="form-horizontal p-2" action="{% url 'projects:project_materials' %}" method="GET" autocomplete="off"
+                    novalidate>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Item Name</label>
+                                <input type="text" id="item_s" name="item_s" class="form-control"
+                                    value="{{request.GET.item_s}}" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Material</label>
+                                <input type="text" id="material_s" name="material_s" class="form-control"
+                                    value="{{request.GET.material_s}}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <a href="{% url 'projects:project_materials' %}" class="btn btn-default btn-outline">Reset</a>
+                        <a href="{% url 'projects:export_excel' %}" target="_blank" class="btn btn-success"><i
+                                class="fa fa-file-pdf-o"></i> Export Excel</a>
+                    </div>
+                </form>
+                
+                <p class="text-danger text-center font-weight-bold mt-2">{{ error }}</p>
+               
+               
+                  
+                    <table class="table table-sm">
+                       
+                        <thead>
+                            <tr>
+                                <th width="18%">Item</th>
+                                <th>Spec</th>
+                                <th width="18%">Material</th>
+                                <th>Rating</th>
+                                <th>Size 1</th>
+                                <th>Sch 1</th>
+                                <th>Size 2</th>
+                                <th>Sch 2</th>
+                                <th>Facing</th>
+                                <th>Quantity</th>
+                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {%if materials %}
+                            {% for material in materials %}
+                            <tr>
+                                <td>{{ material.item.item_s }}</td>
+                                <td>{{ material.item.spec_s }}</td>
+                                <td>{{ material.item.material_s }}</td>
+                                <td>{{ material.item.rating_s }}</td>
+                                <td>{{ material.item.size1_s }}</td>
+                                <td>{{ material.item.sch1_s }}</td>
+                                <td>{{ material.item.size2_s }}</td>
+                                <td>{{ material.item.sch2_s }}</td>
+                                <td>{{ material.item.facing_s }}</td>
+                                <td>
+                                    <b>{{material.quantity}}</b>
+                                </td>
+                                
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="10" class="text-center text-danger font-weight-bold">Material not found
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function edit_material(url) {
+        $.getJSON(url,
+            function (data) {
+                var _data = JSON.parse(data);
+                var __data = _data[0]['fields'];
+                $("#_id").val(_data[0].pk);
+                $("#id_item_s").val(__data.item_s);
+                $("#id_spec_s").val(__data.spec_s);
+                $("#id_material_s").val(__data.material_s);
+                $("#id_rating_s").val(__data.rating_s);
+                $("#id_size1_s").val(__data.size1_s);
+                $("#id_sch1_s").val(__data.sch1_s);
+                $("#id_size2_s").val(__data.size2_s);
+                $("#id_sch2_s").val(__data.sch2_s);
+                $("#id_facing_s").val(__data.facing_s);
+            })
+    }
+</script>
+{% endblock %}

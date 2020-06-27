@@ -1,0 +1,86 @@
+{% extends 'loggedbase.html' %}
+{% block link %} <a href="{% url 'ganttchart' project_list_first.id %}" class="nav-link" target="_blank">{% endblock %}
+
+{% block title %}
+Report - Material Transfer
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="p-3">
+                    <h5><i class="fa fa-search"></i> Search Material Transfer</h5>
+                    <hr>
+                    <form class="form-horizontal" action="{% url 'projects:transfer_report' %}" method="GET"
+                        autocomplete="off" novalidate>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">Item Name</label>
+                                    <select name="item_id" id="item_id" class="form-control">
+                                        <option></option>
+                                        {% for material in materials %}
+                                        <option value="{{material.id}}"
+                                            {% if request.GET.item_id == material.id|stringformat:"i" %}selected{%endif%}>
+                                            {{material.item_s}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">From Date</label>
+                                    <input type="text" name="from_date" id="from_date" class="form-control datepicker"
+                                        value="{{ request.GET.from_date }}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">To Date</label>
+                                    <input type="text" name="to_date" id="to_date" class="form-control datepicker"
+                                        value="{{ request.GET.to_date }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                            <a href="{% url 'projects:transfer_report' %}" class="btn btn-default btn-outline">Reset</a>
+                            <a href="{% url 'projects:transfer_report' %}?from_date={{ request.GET.from_date }}&to_date={{ request.GET.to_date }}&export=excel"
+                                target="_blank" class="btn btn-success"><i class="fa fa-file-pdf-o"></i> Export
+                                Excel</a>
+                            <a href="{% url 'projects:transfer_report' %}?from_date={{ request.GET.from_date }}&to_date={{ request.GET.to_date }}&export=pdf"
+                                target="_blank" class="btn btn-success"><i class="fa fa-file-pdf-o"></i> Export
+                                PDF</a>
+                        </div>
+                    </form>
+                </div>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Item Name</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%if items%}
+                        {% for item in items %}
+                        <tr>
+                            <td>{{ item.created_at|date:'d-m-Y' }}</td>
+                            <td>{{ item.item }}</td>
+                            <td>{{ item.quantity }}</td>
+                        </tr>
+                        {% endfor %}
+                        {%else%}
+                        <tr>
+                            <td colspan="3">Data not found</td>
+                        </tr>
+                        {%endif%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

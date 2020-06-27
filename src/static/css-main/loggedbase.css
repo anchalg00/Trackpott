@@ -1,0 +1,28 @@
+
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+    background-color: white;
+}
+
+.jumbotron {
+    margin-top: 50px;
+    margin-left: 0px;
+    height: 100%;
+    width: 220px;
+    text-align: center;
+    background-color: white;
+    }
+#dashboardlink{
+
+padding-left: 30px;
+
+}
+
+#unique {
+    padding: 10px;
+    margin-left: 100px;
+    background-color: #343a40;
+    display: table;
+    color: #fff;
+}

@@ -1,0 +1,29 @@
+{% extends 'loggedbase.html'%}
+{% block link %} <a href="{% url 'ganttchart' project_list_first.id %}" class="nav-link" target="_blank">{% endblock %}
+
+
+{% load crispy_forms_tags %}
+{%block content%}
+  
+
+<div class="jumbotron" style="width: 500px; margin: 0 auto;">
+<h1 id="loginh1">Edit project: {{editproj}}</h1>
+
+<form method="POST" id="login" >
+  {%csrf_token%}
+
+  <fieldset class="form group">
+  {{form|crispy}}
+  </fieldset>
+  
+  <div class="form-group">
+    <button type="submit" class="btn btn-outline-info">Update</button>
+  </div>
+   <!-- <div class="border-top pt-3">
+            <small class="text-muted">
+                Already Have An Account? <a class="ml-2" href="#">Sign In</a>
+            </small>
+        </div> -->
+</form>
+</div>
+{%endblock%}

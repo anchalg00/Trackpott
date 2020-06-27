@@ -1,0 +1,67 @@
+{% extends 'loggedbase.html' %}
+{% block link %} <a href="{% url 'ganttchart' project_list_first.id %}" class="nav-link" target="_blank">{% endblock %}
+
+{% block title %}
+Report - Purchase Orders
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="p-3">
+                    <h5><i class="fa fa-search"></i> Search PO</h5>
+                    <hr>
+                    <form class="form-horizontal" action="{% url 'purchase_orders:report' %}" method="GET"
+                        autocomplete="off" novalidate>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">From Date</label>
+                                    <input type="text" name="delivery_date_from" id="delivery_date_from"
+                                        class="form-control datepicker" value="{{ request.GET.delivery_date_from }}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">To Date</label>
+                                    <input type="text" name="delivery_date_to" id="delivery_date_to"
+                                        class="form-control datepicker" value="{{ request.GET.delivery_date_to }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                            <a href="{% url 'purchase_orders:report' %}" class="btn btn-default btn-outline">Reset</a>
+                            <a href="{% url 'purchase_orders:report' %}?delivery_date_from={{ request.GET.delivery_date_from }}&delivery_date_to={{ request.GET.delivery_date_to }}&export=excel"
+                                target="_blank" class="btn btn-success"><i class="fa fa-file-pdf-o"></i> Export
+                                Excel</a>
+                            <a href="{% url 'purchase_orders:report' %}?delivery_date_from={{ request.GET.delivery_date_from }}&delivery_date_to={{ request.GET.delivery_date_to }}&export=pdf"
+                                target="_blank" class="btn btn-success"><i class="fa fa-file-pdf-o"></i> Export
+                                PDF</a>
+                        </div>
+                    </form>
+                </div>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>PO No.</th>
+                            <th>Delivery Date</th>
+                            <th>PO Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for purchase_order in purchase_orders %}
+                        <tr>
+                            <td>{{ purchase_order.po_number }}</td>
+                            <td>{{ purchase_order.delivery_date|date:'d-m-Y' }}</td>
+                            <td>{% if purchase_order.po_status == 'd'%}Delivered{%else%}Open{%endif%}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

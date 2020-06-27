@@ -1,0 +1,46 @@
+{%extends 'base.html'%}
+
+{% load crispy_forms_tags %}
+{%block content%}
+
+<div class="container-login100" >
+<div class="wrap-login100">
+<form method="POST" class="login100-form validate-form" >
+  <span class="login100-form-title p-b-43"><h1>
+    Login to continue </h1>
+  </span>
+  {%csrf_token%}
+  <div class="validate-input">
+    <fieldset class="form group">
+      {{form|crispy}}
+    </fieldset>
+  </div>
+  <br>
+
+  <div class="flex-sb-m w-full p-t-3 p-b-32">
+    <div class="contact100-form-checkbox">
+      <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+      <label class="label-checkbox100" for="ckb1">
+        Remember me
+      </label>
+    </div>
+    <div>
+      <a href="#" class="txt1">
+        Forgot Password?
+      </a>
+    </div>
+  </div>
+  <div class="container-login100-form-btn">
+    <button type="submit"  class="btn btn-outline-info"style="margin-right:20px;color:white;background-image:linear-gradient(to right, #003366,rgb(0,92,151), #4682B4);width: 300px;height: 75px;">
+      <h4>Login</h4>
+    </button>
+  </div>
+</form>
+
+<div class="login100-more" style="background-image:url('../../static/jacket-3484307_1280.jpg')">
+        </div>
+</div>
+</div>
+
+{%endblock%}
+<!-- login100-form-btn -->

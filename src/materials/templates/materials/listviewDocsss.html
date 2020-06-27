@@ -1,0 +1,170 @@
+{% extends 'loggedbase.html' %}
+{% load mathfilters %}
+{% block title %}
+Master Document Register
+{% endblock %}
+{% block link %} <a href="{% url 'ganttchart' project_list_first.id %}" class="nav-link" target="_blank">{% endblock %}
+{% block content %}
+{% load crispy_forms_tags %}
+<style type="text/css">
+/*tr,td,th{
+    background-color: white;
+}*/
+.card{
+    width:170%;
+}
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body p-0">
+                <h5 class="pt-2 pl-2"><i class="fa fa-search"></i> Search Document</h5>
+                <hr>
+                <form class="form-horizontal p-2" action="{% url 'materials:documentview' %}" method="GET" autocomplete="off"
+                    novalidate>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">DOC NO</label>
+                                <input type="text" id="ADNOC_documentno" name="ADNOC_documentno" class="form-control"
+                                    value="{{request.GET.ADNOC_documentno}}" />
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Material</label>
+                                <input type="text" id="material_s" name="material_s" class="form-control"
+                                    value="{{request.GET.material_s}}" />
+                            </div>
+                        </div> -->
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <a href="{% url 'materials:documentview' %}" class="btn btn-default btn-outline">Reset</a>
+                        <a href="{% url 'materials:excel_export_doc' %}" target="_blank" class="btn btn-success"><i
+                                class="fa fa-file-pdf-o"></i> Export Excel</a>
+                    </div>
+                </form>
+                <form id="frm_material" method="POST" action="{% url 'document' %}"  enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <table class="table table-sm">
+ 
+                        <tr>
+                            <input type="hidden" id="_id" name="_id" value="{{initial_id}}" >
+                           
+                            <th>{{form.ADNOC_documentno}}<span class="text-danger text-sm">{{form.ADNOC_documentno.errors.as_text}}</span>
+                            </th>
+                            <th>{{form.description}}<span class="text-danger text-sm">{{form.description.errors.as_text}}</span>
+                            </th>
+                            <th>{{form.revision}}<span class="text-danger text-sm">{{form.revision.errors.as_text}}</span>
+                            </th>
+                            <th>{{form.due_date}}<span class="text-danger text-sm">{{form.due_date.errors.as_text}}</span>
+                            </th>
+                            <th>{{form.submission_date}}<span class="text-danger text-sm">{{form.submission_date.errors.as_text}}</span>
+                            </th>
+                            <th>{{form.transmittal_number}}<span
+                                    class="text-danger text-sm">{{form.transmittal_number.errors.as_text}}</span>
+                            <th>{{form.reason_of_issue}}<span
+                                    class="text-danger text-sm">{{form.reason_of_issue.errors.as_text}}</span>
+                            <th>{{form.document}}<span
+                                    class="text-danger text-sm">{{form.document.errors.as_text}}</span>
+                            <th>{{form.aprroval_date}}<span
+                                    class="text-danger text-sm">{{form.aprroval_date.errors.as_text}}</span>
+                            <th>{{form.receipt_transmittalno}}<span
+                                    class="text-danger text-sm">{{form.receipt_transmittalno.errors.as_text}}</span>
+                            </th>
+                            <th>{{form.view_response}}<span
+                                    class="text-danger text-sm">{{form.view_response.errors.as_text}}</span>
+                            </th>
+                            <th>{{form.aprroval_code}}<span
+                                    class="text-danger text-sm">{{form.aprroval_code.errors.as_text}}</span>
+                            </th>
+                            <th>{{form.remarks}}<span
+                                    class="text-danger text-sm">{{form.remarks.errors.as_text}}</span>
+                            </th>
+
+                            <th><input type="submit" name="" id="" class="btn btn-primary" value="Save"></th>
+                        </tr>
+                        <thead>
+                            <tr>
+                                    <th>DOC NO.</th>                                                                   
+                                    <th>DESCRIPTION</th>
+                                    <th>REVISION</th>
+                                    <th>DUE DATE</th>
+                                    <th>SUBMISSION DATE</th>
+                                    <th>TRANS. NO.</th>
+                                    <th>ROI</th>
+                                    <th>DOCUMENT</th>
+                                    <th>APPROVAL DATE</th>
+                                    <th>TRANS. NO.</th>
+                                    <th>RESPONSE</th>
+                                    <th>STATUS</th>
+                                    <th>REMARKS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for material in object_list %}
+                            <tr>
+                                <td class="text-center">{{ material.ADNOC_documentno}}</td>
+                              
+                                <td class="text-center">{{ material.description }}</td>
+                                <td class="text-center">{{ material.revision }}</td>
+                                <td class="text-center">{{ material.due_date }}</td>
+                                <td class="text-center">{{ material.submission_date }}</td>
+                                <td class="text-center">{{ material.transmittal_number }}</td>
+                                <td class="text-center">{{ material.reason_of_issue }}</td>
+                                <td class="text-center"><a href="../media/{{material.document}}" target="_blank"><i class="nav-icon fas fa-copy"></i></a></td>
+                                <td class="text-center">{{ material.aprroval_date }}</td>
+                                <td class="text-center">{{ material.receipt_transmittalno }}</td>
+                                <td class="text-center"><a href="../media/{{material.view_response}}" target="_blank"><i class="nav-icon fas fa-copy"></i></a></td>
+                                <td class="text-center">{{ material.approval_code }}</td>
+                                <td class="text-center">{{ material.remarks }}</td>
+                                <td class="text-center">
+                                    <i class="fa fa-pencil"
+                                        onclick="edit_doc('{% url 'materials:get_doc' material.id %}')"></i>
+                                </td>
+
+
+                                
+<!--  -->
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function edit_doc(url) {
+        $.getJSON(url,
+            function (data) {
+                console.log(data)
+                var _data = JSON.parse(data);
+                var __data = _data[0]['fields'];
+                $("#_id").val(_data[0].pk);
+                $("#id_ADNOC_documentno").val(__data.ADNOC_documentno);
+                $("#id_description").val(__data.description);
+                $("#id_revision").val(__data.revision);
+                $("#id_due_date").val(__data.due_date);
+                $("#id_submission_date").val(__data.submission_date);
+                $("#id_transmittal_number").val(__data.transmittal_number);
+                $("#id_reason_of_issue").val(__data.reason_of_issue);
+                $("#id_document").val(__data.document);
+                $("#id_aprroval_date").val(__data.aprroval_date);
+                $("#id_receipt_transmittalno").val(__data.receipt_transmittalno);
+                $("#id_view_response").val(__data.view_response);
+
+                $("#id_approval_code").val(__data.approval_code);
+                $("#id_remarks").val(__data.remarks);
+
+
+
+
+            })
+    }
+</script>
+{% endblock %}
+

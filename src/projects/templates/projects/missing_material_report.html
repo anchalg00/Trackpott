@@ -1,0 +1,71 @@
+{% extends 'loggedbase.html' %}
+{% block title %}
+Missing Materials - Report <a
+    href="{% url 'projects:missing_material_report' %}?receipt_number={{ request.GET.receipt_number }}&export=pdf"
+    target="_blank" class="btn pull-right btn-success"><i class="fa fa-file-pdf-o"></i> Export
+    PDF</a>
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body p-0">
+                <h5 class="pt-2 pl-2"><i class="fa fa-search"></i> Search Receipt</h5>
+                <hr>
+                <form class="form-horizontal p-2" action="{% url 'projects:missing_material_report' %}" method="GET"
+                    autocomplete="off" novalidate>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Receipt Number</label>
+                                <input type="text" id="receipt_number" name="receipt_number" class="form-control"
+                                    value="{{request.GET.receipt_number}}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <a href="{% url 'projects:missing_material_report' %}"
+                            class="btn btn-default btn-outline">Reset</a>
+                    </div>
+                </form>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Project Name</th>
+                            <th>Receipt No.</th>
+                            <th>Contract Name</th>
+                            <th>Address</th>
+                            <th>Delivery Date</th>
+                            <th>Missed on</th>
+                            <th>Item Name</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if missing_items %}
+                        {% for missing_item in missing_items %}
+                        <tr>
+                            <td>{{ missing_item.project.schedule.name }}</td>
+                            <td>{{ missing_item.project.receipt_number }}</td>
+                            <td>{{ missing_item.project.contract_name }}</td>
+                            <td>{{ missing_item.project.address }}</td>
+                            <td>{{ missing_item.project.delivery_date }}</td>
+                            <td>{{ missing_item.created_at|date:'d-m-Y' }}</td>
+                            <td>{{ missing_item.item }}</td>
+                            <td>{{ missing_item.quantity }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="text-danger text-center font-weight-bold">Missing materials not
+                                found!</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,265 @@
+{%extends 'loggedbase.html'%}
+{% block link %} <a href="{% url 'ganttchart' project_list_first.id %}" class="nav-link" target="_blank">{% endblock %}
+{% block title %}PROJECTS{% endblock %}
+{%block content %}
+ {% load crispy_forms_tags %}
+<style type="text/css">
+
+body{
+  color:black;
+
+}
+
+
+#project-links{
+
+  color: white;
+  padding-right: 50px;
+  padding-left: 50px;
+  background-color: black;
+
+
+
+
+
+
+}
+
+#projectlinks:hover{
+  color:#E8CE0E ;
+
+
+}
+
+
+</style>
+
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="../../static/table/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../static/table/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../static/table/vendor/animate/animate.css ">
+    <link rel="stylesheet" href="../../static/table/vendor/select2/select2.min.css ">
+    <link rel="stylesheet" href="../../static/table/vendor/perfect-scrollbar/perfect-scrollbar.css ">
+    <link rel="stylesheet" href="../../static/table/css/util.css ">
+    <link rel="stylesheet" href="../../static/table/css/main.css ">
+
+
+
+
+
+  <div style="padding:20px;">
+      
+      <hr style="background-color: white;align-content:center;">
+
+
+      <div class="limiter" style="align-content:center;">
+      <div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }} is selected</li>
+          {% endfor %}
+      </ul>
+        {% endif %}
+        
+      </div>
+
+        <div class="table100"style="margin:auto; ">
+          <table style="margin:auto; text-align: center;">
+            <thead>
+              <tr class="table100-head"style="margin:auto;background-color: cadetblue;">
+                <th class="column1">Project Name</th>
+                <th class="column3" style="text-align: center;">Contractor Name</th>
+                <th class="column2">Start Date</th>
+                <th class="column3">End Date</th>
+                <th class="column3">Progress</th>
+                <form method="get" value="{{instance.id}}">
+                <th class="column3"><button type="submit " style="text-decoration: underline;"> Select</button></th>
+                <th class="column3"></th>
+
+              </tr>
+            </thead>
+            <tbody>
+                             
+
+
+                  
+                     {% for instance in schedule_list %}
+                  <tr class="clickable-row " data-href='url://www.google.com'>
+                   <td style="padding-left: 40px; "><a style="color:black;" href="{% url 'ganttchart' instance.id %}">  {{instance.name}} </a> </td>
+                   <td style="text-align: center;" >  {{instance.contractor_name.username}} </td>
+                    <td style="padding-left: 8px;" >  {{instance.start_date}} </td>
+                     <td style="padding-left: 8px;" >  {{instance.end_date}} </td>
+
+                      <td style="padding-left:8px;">{% if instance.progress_schedule %} {{instance.progress_schedule}}% {% else %} 0% 
+                      {% endif %}</td>
+                      
+                    <td style="padding-left:8px;">                   
+                      
+                      
+                      <input type="radio"  class="check"  id="project" name="project" value="{{instance.id}}">
+                      
+                  </td>
+                  <td class="text-center">
+                                    <a href="{% url 'projects:edit_proj' instance.id%}"><i class="fa fa-pencil"
+                                       ></i></a>
+                                </td>
+
+
+                   </tr>
+                       {% endfor %}
+                   
+                   </form>
+
+
+
+
+
+        
+
+
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+  </div>
+<script src="../../static/table/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/table/vendor/bootstrap/js/popper.js"></script>
+  <script src="../../static/table/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/table/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/table/js/main.js"></script>
+  <!-- {% for object in project_selected %}
+  <h1 style="margin-top: 25px; padding-left:300px ;">Project: {{object.name}} selected!</h1>
+  {% endfor %}
+
+  <h1>{{ project_selected_first}}</h1> -->
+
+  <hr style="background-color: white;align-content:center;margin-right:30px ; "><br>
+  
+<!-- Button trigger modal -->
+{% if request.user.is_admin%}
+<div class="row" >
+<div class="col-6 col-sm-12 col-md-6" style="text-align: center;">
+          
+<button type="button" class="btn btn-outline-info
+ " data-toggle="modal" data-target="#exampleModalCenter" style="margin-right:20px;border: 2.5px solid;width: 300px;height: 75px;">
+  Create New Project
+</button>
+<br>
+<br>
+</div>
+<div class="col-6 col-sm-12 col-md-6" style="text-align: center;">
+<!-- <button type="button" class="btn btn-outline-info" href="" style="margin-right:20px;border: 2.5px solid;width: 300px;height: 75px;" >
+ -->  <a href="{% url 'register'%}" class="btn btn-outline-info" style="margin-right:20px;border: 2.5px solid;width: 300px;height: 75px; padding-top: 25px;
+    font-size: medium;">
+  Create New User
+<!-- </button>
+ -->  </a>
+
+</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLongTitle">Create New Project</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post">
+
+    {% csrf_token %}
+
+    <div style=" width: 100%; margin: 0 auto">
+     <div style="width: 100%; margin: 0 auto; padding: 20px;background-color: lightgrey">
+      {{form|crispy}}
+       <button type="submit" class="btn btn-primary" style="background-color:#343a40 ">Create</button>
+      </div>
+    </div>
+
+  </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+
+
+
+
+<!-- <div class="modal fade" id="user" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLongTitle">Create New User</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{% url 'home' %}">
+
+            {% csrf_token %}
+
+            <div style=" background-color:lightgrey; width: 100%; margin: 0 auto">
+             <div style="width: 100%; margin: 0 auto; padding: 20px;color: black">
+              {{form1|crispy}}
+               <button type="submit" class="btn btn-primary" style="background-color:#343a40 ">Create</button>
+              </div>
+            </div>
+
+  </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div> -->
+
+
+
+<script type="text/javascript">
+  $(".vote").click(function () {
+    var id = $(this).data("id"),
+
+    $.ajax({
+        url: '/ajax/chart/',
+        data: {
+            'id': id,
+
+        }
+    });
+});
+
+
+
+$(document).ready(function(){
+    $('.check').click(function() {
+        $('.check').not(this).prop('checked', false);
+    });
+});
+</script>
+
+
+{%endblock%}

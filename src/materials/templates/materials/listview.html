@@ -1,0 +1,210 @@
+ {%extends 'loggedbase.html'%}
+{% block link %} <a href="{% url 'ganttchart' project_list_first.id %}" class="nav-link" target="_blank">{% endblock %}
+
+
+{% block title %}SPOOL WISE DRAWING{% endblock %}
+
+ {%block content%}
+ <style type="text/css">
+   body{
+    overflow-y: scroll;
+   }
+ </style>
+
+ {% load crispy_forms_tags %}
+ <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png"      href="../../static/table2/images/icons/favicon.ico"/>
+  <link rel="stylesheet" type="text/css" href="../../static/table2/vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../../static/table2/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="../../static/table2/vendor/animate/animate.css">
+  <link rel="stylesheet" type="text/css" href="../../static/table2/vendor/select2/select2.min.css">
+  <link rel="stylesheet" type="text/css" href="../../static/table2/vendor/perfect-scrollbar/perfect-scrollbar.css">
+  <link rel="stylesheet" type="text/css" href="../../static/table2/css/util.css">
+  <link rel="stylesheet" type="text/css" href="../../static/table2/css/main.css">
+
+<!-- <div class="container-table100">
+    <div class="wrap-table100" > -->
+      <div style="padding:20px;">
+      <hr>
+      
+      <div class="table100 ver1">
+        <div class="table100-firstcol" >
+           <form method="post" action="{% url 'RequirementList' %}">
+              {% csrf_token %}
+              {{ form.non_field_errors }}
+              <table>
+                <thead>
+                  <tr class="row100 head"><th style="background-color:cadetblue; color:white" class="cell100 column1">Spool Details</th></tr>
+                </thead>
+                <tbody>
+                  {% for instance in object_list %}
+                  <tr class="row100 head"><td class="cell100 column1">{{instance.spool_details}}</td></tr>
+                  {% endfor %}
+                  <tr class="row100 head">
+                    <td class="cell100 column1" style="background-color:cadetblue; padding-left: 80px;"> {{ form.spool_details.errors }}{{form.spool_details}}</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+<div class="wrap-table100-nextcols js-pscroll">
+<div class="table100-nextcols">
+<table>
+<thead>
+<tr class="row100 head">
+<th style="background-color:cadetblue; color:white"class="cell100 column2">DRAWING NO.</th>
+<th style="background-color:cadetblue ; color:white"class="cell100 column3">LINE NO.</th>
+<th style="background-color:cadetblue ; color:white"class="cell100 column4">SPEC</th>
+<th style="background-color:cadetblue ; color:white"class="cell100 column5">ITEM</th>
+<th style="background-color:cadetblue ; color:white"class="cell100 column6">MATERIAL</th>
+<th style="background-color:cadetblue ; color:white"class="cell100 column7">RATING</th>
+<th style="background-color:cadetblue ; color:white"class="cell100 column8">SIZE</th>
+<th style="background-color:cadetblue ; color:white"class="cell100 column9">SCH</th>
+<th style="background-color:cadetblue ; color:white" class="cell100 column10">SIZE</th>
+<th style="background-color:cadetblue ; color:white"class="cell100 column11">SCH</th>
+<th style="background-color:cadetblue ; color:white"class="cell100 column12">FACING</th>
+<th style="background-color:cadetblue ; color:white"class="cell100 column13">QTY</th>
+<th style="background-color:cadetblue ; color:white"class="cell100 column14">TIME DUE</th>
+<th style="background-color:cadetblue ; color:white"class="cell100 column15">REMARKS</th>
+</tr>
+</thead>
+<tbody>
+{% for instance in object_list %}
+<tr class="row100 body">
+<td class="cell100 column2">{{instance.drawing_no}}</td>
+<td class="cell100 column3">{{instance.line_no}}</td>
+<td class="cell100 column4">{{instance.spec}}</td>
+<td class="cell100 column5">{{instance.item}}</td>
+<td class="cell100 column6">{{instance.material}}</td>
+<td class="cell100 column7">{{instance.rating}}</td>
+<td class="cell100 column8">{{instance.size1}}</td>
+<td class="cell100 column9">{{instance.sch1}}</td>
+<td class="cell100 column10">{{instance.size2}}</td>
+<td class="cell100 column11">{{instance.sch2}}</td>
+<td class="cell100 column12">{{instance.facing}}</td>
+<td class="cell100 column13">{{instance.qty}}</td>
+<td class="cell100 column14">{{instance.time_due}}</td>
+<td class="cell100 column15">{{instance.remarks}}</td>
+</tr>
+{% endfor %}
+
+
+
+<tr class="row100 body">
+<td class="cell100 column2" style="background-color: cadetblue; padding-left: 50px;">{{ form.drawing_no.errors }}{{form.drawing_no}}</td>
+<td class="cell100 column3" style="background-color: cadetblue; padding-left: 50px;">{{ form.line_no.errors }}{{form.line_no}}</td>
+<td class="cell100 column4" style="background-color: cadetblue; padding-left: 50px;">{{ form.spec.errors }} {{form.spec}}</td>
+<td class="cell100 column5" style="background-color: cadetblue; padding-left: 50px;">{{ form.item.errors }} {{form.item}}</td>
+<td class="cell100 column6" style="background-color: cadetblue; padding-left: 50px;">{{ form.material.errors }} {{form.material}}</td>
+
+<td class="cell100 column3" style="background-color: cadetblue; padding-left: 50px;">{{ form.rating.errors }}{{form.rating}}</td>
+<td class="cell100 column4" style="background-color: cadetblue; padding-left: 50px;">{{ form.size1.errors }} {{form.size1}}</td>
+<td class="cell100 column5" style="background-color: cadetblue; padding-left: 50px;">{{ form.sch1.errors }} {{form.sch1}}</td>
+<td class="cell100 column6" style="background-color: cadetblue; padding-left: 50px;">{{ form.size2.errors }} {{form.size2}}</td>
+
+<td class="cell100 column3" style="background-color: cadetblue; padding-left: 50px;">{{ form.sch2.errors }}{{form.sch2}}</td>
+<td class="cell100 column4" style="background-color: cadetblue; padding-left: 50px;">{{ form.facing.errors }} {{form.facing}}</td>
+<td class="cell100 column5" style="background-color: cadetblue; padding-left: 50px;">{{ form.qty.errors }} {{form.qty}}</td>
+<td class="cell100 column6" style="background-color: cadetblue; padding-left: 50px;">{{ form.time_due.errors }} {{form.time_due}}</td>
+<td class="cell100 column6" style="background-color: cadetblue; padding-left: 50px;">{{ form.remarks.errors }} {{form.remarks}}</td>
+
+
+
+</tr>
+
+</tbody>
+</table>
+
+
+
+</div>
+</div>
+</div>
+
+
+
+
+
+
+<button type="submit" class="btn btn-primary btn-outline-info" style=" margin-top:5%;padding-left:2%;padding-right: 2% ;width:20%;margin-left:42%;background-color:white;color:cadetblue; "><h6>Add</h6></button>
+
+</form>
+</div>
+</div> 
+</div>
+</div>
+</div>
+
+   <!--  <button type="button" class=" btn btn-outline-info" data-toggle="modal" data-target="#exampleModalCenter" 
+     style="margin-right:20px;color: white;border: 2.5px solid white;width: 300px;height: 75px;" >
+     Add New Record
+     </button>
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="exampleModalLongTitle">Add Details</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form method="post">
+              {% csrf_token %}
+              <div style=" background-color: cadetblue; width: 100%; margin: 0 auto;">
+                <div style="width: 100%; margin: 0 auto; padding: 20px; color: white;">
+                  {{form|crispy}}
+                  <button type="submit" class="btn btn-primary" style="background-color:white;color:cadetblue; ">Add</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Go Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+
+
+ -->
+
+  <!--===============================================================================================-->  
+  <script src="../../static/table2/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/table2/vendor/bootstrap/js/popper.js"></script>
+  <script src="../../static/table2/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/table2/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/table2/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+  <script>
+    $('.js-pscroll').each(function(){
+      var ps = new PerfectScrollbar(this);
+
+      $(window).on('resize', function(){
+        ps.update();
+      })
+
+      $(this).on('ps-x-reach-start', function(){
+        $(this).parent().find('.table100-firstcol').removeClass('shadow-table100-firstcol');
+      });
+
+      $(this).on('ps-scroll-x', function(){
+        $(this).parent().find('.table100-firstcol').addClass('shadow-table100-firstcol');
+      });
+
+    }); 
+  </script>
+<!--===============================================================================================-->
+  <script src="../../statis/table2/js/main.js"></script>
+
+{%endblock%}
+
+
+
+
+

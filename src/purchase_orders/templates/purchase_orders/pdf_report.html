@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PO - PDF Report</title>
+    <style>
+        @page {
+            size: letter landscape;
+            margin: 2cm;
+        }
+
+        table._table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: auto;
+        }
+
+        /* Zebra striping */
+        tr:nth-of-type(odd) {
+            background: #eee;
+        }
+
+        _table th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        _table td,
+        _table th {
+            padding-top: 4px;
+            padding: 2px;
+            /*border: 1px solid #000;*/
+            text-align: left;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <table border="0" style="border:none;">
+        <tr>
+            <td width="15%"><img src="static/logo.png" width="25%"></td>
+            <td>
+                <div style="font-size:32px;text-align:center;font-weight:bold;">Purchase Order - Report</div>
+            </td>
+            <td width="15%"><img src="static/logo.png" width="25%"></td>
+        </tr>
+    </table>
+    <hr>
+    <br>
+    <table style="font-size:18px;" class="_table">
+        <tr>
+            <td>PO No.</td>
+            <td>{{purchase_order.po_number}}</td>
+        </tr>
+        <tr>
+            <td>Vendor Name</td>
+            <td>{{purchase_order.vendor_name}}</td>
+        </tr>
+        <tr>
+            <td>Delivery Date</td>
+            <td>{{purchase_order.delivery_date|date:'d-m-Y'}}</td>
+        </tr>
+    </table>
+    <br>
+    <table width="100%" style="font-size:16px;" cellpadding="2" border="1">
+        <thead>
+            <tr>
+                <td>S.No.</td>
+                <td width="18%">Item Name</td>
+                <td>Spec.</td>
+                <td width="18%">Material</td>
+                <td>Rating</td>
+                <td>Size 1</td>
+                <td>Sch 1</td>
+                <td>Size 2</td>
+                <td>Sch 2</td>
+                <td>Facing</td>
+                <td style="text-align:center;">Qty</td>
+            </tr>
+        </thead>
+        {% for purchase_order_item in purchase_order_items %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{purchase_order_item.item.item_s}}</td>
+            <td>{{purchase_order_item.item.spec_s}}</td>
+            <td>{{purchase_order_item.item.material_s}}</td>
+            <td>{{ purchase_order_item.item.rating_s }}</td>
+            <td>{{ purchase_order_item.item.size1_s }}</td>
+            <td>{{ purchase_order_item.item.sch1_s }}</td>
+            <td>{{ purchase_order_item.item.size2_s }}</td>
+            <td>{{ purchase_order_item.item.sch2_s }}</td>
+            <td>{{ purchase_order_item.item.facing_s }}</td>
+            <td style="text-align:center;">{{purchase_order_item.quantity}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>

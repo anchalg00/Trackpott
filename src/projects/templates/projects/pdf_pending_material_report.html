@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Material - PDF Report</title>
+    <style>
+        @page {
+            size: letter landscape;
+            margin: 2cm;
+        }
+
+        table._table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: auto;
+        }
+
+        /* Zebra striping */
+        tr:nth-of-type(odd) {
+            background: #eee;
+        }
+
+        _table th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        _table td,
+        _table th {
+            padding-top: 4px;
+            padding: 2px;
+            /*border: 1px solid #000;*/
+            text-align: left;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <table border="0" style="border:none;">
+        <tr>
+            <td width="15%"><img src="static/logo.png" width="25%"></td>
+            <td>
+                <div style="font-size:32px;text-align:center;font-weight:bold;">Pending Materials - Report</div>
+            </td>
+            <td width="15%"><img src="static/logo.png" width="25%"></td>
+        </tr>
+    </table>
+    <hr>
+    <br>
+    <table width="100%" style="font-size:16px;" cellpadding="2" border="1">
+        <thead>
+            <tr>
+                <th>Project Name</th>
+                <th>Receipt No.</th>
+                <th>Contract Name</th>
+                <th>Address</th>
+                <th>Delivery Date</th>
+                <th>Item Name</th>
+                <th>Spec</th>
+                <th>Material</th>
+                <th>Rating</th>
+                <th>Size</th>
+                <th>Sch</th>
+                <th>Facing</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        {% for pending_item in pending_items %}
+        <tr>
+            <td>{{ pending_item.project.schedule.name }}</td>
+            <td>{{ pending_item.project.receipt_number }}</td>
+            <td>{{ pending_item.project.contract_name }}</td>
+            <td>{{ pending_item.project.address }}</td>
+            <td>{{ pending_item.project.delivery_date }}</td>
+            <td>{{ pending_item.item }}</td>
+            <td>{{ pending_item.item.spec_s}}</td>
+            <td>{{ pending_item.item.material_s}}</td>
+            <td>{{ pending_item.item.rating_s}}</td>
+            <td>{{ pending_item.item.size1_s}}</td>
+            <td>{{ pending_item.item.sch1_s}}</td>
+            <td>{{ pending_item.item.facing_s}}</td>
+
+
+
+
+
+
+
+            <td align="center">{{ pending_item.quantity }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>

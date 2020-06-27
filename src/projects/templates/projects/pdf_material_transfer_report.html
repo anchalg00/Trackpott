@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Transfer - PDF Report</title>
+    <style>
+        @page {
+            size: letter landscape;
+            margin: 2cm;
+        }
+
+        table._table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: auto;
+        }
+
+        /* Zebra striping */
+        tr:nth-of-type(odd) {
+            background: #eee;
+        }
+
+        _table th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        _table td,
+        _table th {
+            padding-top: 4px;
+            padding: 2px;
+            /*border: 1px solid #000;*/
+            text-align: left;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <table border="0" style="border:none;">
+        <tr>
+            <td width="15%"><img src="static/logo.png" width="25%"></td>
+            <td>
+                <div style="font-size:32px;text-align:center;font-weight:bold;">Material Transfer - Report</div>
+            </td>
+            <td width="15%"><img src="static/logo.png" width="25%"></td>
+        </tr>
+    </table>
+    <hr>
+    <br>
+    <table width="100%" style="font-size:16px;" cellpadding="2" border="1">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Item Name</th>
+                <th align="center">Quantity</th>
+            </tr>
+        </thead>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.created_at|date:'d-m-Y' }}</td>
+            <td>{{ item.item }}</td>
+            <td align="center">{{ item.quantity }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>

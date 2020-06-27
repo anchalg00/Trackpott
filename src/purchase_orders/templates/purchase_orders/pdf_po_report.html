@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PO - PDF Report</title>
+    <style>
+        @page {
+            size: letter landscape;
+            margin: 2cm;
+        }
+
+        table._table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: auto;
+        }
+
+        /* Zebra striping */
+        tr:nth-of-type(odd) {
+            background: #eee;
+        }
+
+        _table th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        _table td,
+        _table th {
+            padding-top: 4px;
+            padding: 2px;
+            /*border: 1px solid #000;*/
+            text-align: left;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <table border="0" style="border:none;">
+        <tr>
+            <td width="15%"><img src="static/logo.png" width="25%"></td>
+            <td>
+                <div style="font-size:32px;text-align:center;font-weight:bold;">Purchase Order - Report</div>
+            </td>
+            <td width="15%"><img src="static/logo.png" width="25%"></td>
+        </tr>
+    </table>
+    <hr>
+    <br>
+    <table width="100%" style="font-size:16px;" cellpadding="2" border="1">
+        <thead>
+            <tr>
+                <th>PO No.</th>
+                <th>Delivery Date</th>
+                <th align="center">PO Status</th>
+            </tr>
+        </thead>
+        {% for purchase_order in purchase_orders %}
+        <tr>
+            <td>{{ purchase_order.po_number }}</td>
+            <td>{{ purchase_order.delivery_date|date:'d-m-Y' }}</td>
+            <td align="center">{% if purchase_order.po_status == 'd'%}Delivered{%else%}Open{%endif%}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>

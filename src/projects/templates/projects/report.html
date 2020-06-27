@@ -1,0 +1,66 @@
+{% extends 'loggedbase.html' %}
+{% block link %} <a href="{% url 'ganttchart' project_list_first.id %}" class="nav-link" target="_blank">{% endblock %}
+
+{% block title %}
+Project Report
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body p-0">
+                {% for error in form.non_field_errors  %}
+                <p class="text-danger text-center font-weight-bold mt-2">{{ error }}</p>
+                {% endfor %}
+                <form id="frm_project-item" action="{% url 'projects:items' project.id %}" method="POST"
+                    autocomplete="off" novalidate>
+                    {% csrf_token %}
+                    <table class="table table-sm">
+                        <tr>
+                            <input type="hidden" id="_id" name="_id" value="{{initial_id}}">
+                            <th>{{form.item}}<span class="text-danger text-sm">{{form.item.errors.as_text}}</span>
+                            </th>
+                            <th>{{form.quantity}}<span
+                                    class="text-danger text-sm">{{form.quantity.errors.as_text}}</span>
+                            </th>
+                            <th><input type="submit" name="" id="" class="btn btn-primary" value="Save"></th>
+                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for project_item in project_items %}
+                            <tr>
+                                <td>{{ project_item.item }}</td>
+                                <td>{{ project_item.quantity }}</td>
+                                <td class="text-center">
+                                    <i class="fa fa-pencil"
+                                        onclick="edit_project_item('{% url 'projects:get_project_item' project_item.id %}')"></i>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function edit_project_item(url) {
+        $.getJSON(url,
+            function (data) {
+                console.log(data)
+                var _data = JSON.parse(data);
+                var __data = _data[0]['fields'];
+                $("#_id").val(_data[0].pk);
+                $("#id_item").val(__data.item);
+                $("#id_quantity").val(__data.quantity);
+            })
+    }
+</script>
+{% endblock %}

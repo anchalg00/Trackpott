@@ -1,0 +1,103 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trackpot</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<!--   <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->  
+  <link rel="icon" type="image/png" href="../../static/login/images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../../static/login/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../../static/login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../../static/login/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../../static/login/vendor/animate/animate.css">
+<!--===============================================================================================-->  
+  <link rel="stylesheet" type="text/css" href="../../static/login/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../../static/login/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../../static/login/vendor/select2/select2.min.css">
+<!--===============================================================================================-->  
+  <link rel="stylesheet" type="text/css" href="../../static/login/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../../static/login/css/util.css">
+  <link rel="stylesheet" type="text/css" href="../../static/login/css/main.css">
+  <style type="text/css">
+  body{
+    
+}
+</style>
+
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark "style="background-image:linear-gradient(to right, #003366,rgb(0,92,151), #4682B4,lightblue)">
+  <a class="navbar-brand" href="#" style="color:white"><h1><strong>Trackpott</strong></h1></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto">
+      
+     
+    </ul>
+    
+  </div>
+</nav>
+
+
+
+
+<div class="limiter">
+  <div class="container-login100">
+  <div class="wrap-login100">
+    <!-- {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success" style="margin-top: 70px;">
+        {{message}}
+        </div>
+      {% endfor  %}
+    {% endif %}
+ -->
+    {%block content %}
+
+
+    {%endblock%}
+    <!-- <div class="login100-more" style="background-image:linear-gradient(to right, #003366,rgb(0,92,151), #4682B4,lightblue));">
+        </div> -->
+        <!-- div class="login100-more" style="background-color:blue;">
+        </div> -->
+  </div>
+</div>
+</div>
+
+
+  <script src="../../static/login/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/login/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/login/vendor/bootstrap/js/popper.js"></script>
+  <script src="../../static/login/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/login/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/login/vendor/daterangepicker/moment.min.js"></script>
+  <script src="../../static/login/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/login/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/login/js/main.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>

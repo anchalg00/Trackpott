@@ -1,0 +1,189 @@
+<!--  {%extends 'loggedbase.html'%}
+{% block title %}MASTER DOCUMENT REGISTER{% endblock %}
+{% block link %} <a href="{% url 'ganttchart' project_list_first.id %}" class="nav-link" target="_blank">{% endblock %}
+
+ {%block content%}
+ {% load crispy_forms_tags %}
+ <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png"      href="../../static/table2/images/icons/favicon.ico"/>
+  <link rel="stylesheet" type="text/css" href="../../static/table2/vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../../static/table2/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="../../static/table2/vendor/animate/animate.css">
+  <link rel="stylesheet" type="text/css" href="../../static/table2/vendor/select2/select2.min.css">
+  <link rel="stylesheet" type="text/css" href="../../static/table2/vendor/perfect-scrollbar/perfect-scrollbar.css">
+  <link rel="stylesheet" type="text/css" href="../../static/table2/css/util.css">
+  <link rel="stylesheet" type="text/css" href="../../static/table2/css/main.css">
+
+
+      <hr>
+  <div style="padding:20px;">
+  <div class="container-table100" >
+    <div class="wrap-table100"> -->
+      <div class="table100 ver1">
+        
+        <div class="table100-firstcol">
+           <form method="post" action="{% url 'document' %}" enctype="multipart/form-data">
+                     {% csrf_token %}
+                     {{ form.non_field_errors }}
+          <table>
+            <thead>
+              <tr class="row100 head"><th style="background-color:cadetblue; color:white" class="cell100 column1">ADNOC DOCUMENT NO. </th></tr>
+            </thead>
+            <tbody>
+              {% for instance in object_list %}
+              <tr class="row100 head"><td class="cell100 column1">{{instance.ADNOC_documentno}}</td></tr>
+             {% endfor %}
+             <tr class="row100 head">
+                      
+              
+                    <td class="cell100 column1" style="background-color:cadetblue; padding-left: 80px;height:59px"> {{ form.ADNOC_documentno.errors }}{{form.ADNOC_documentno}}</td>
+
+                  
+                    
+                  </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="wrap-table100-nextcols js-pscroll">
+          <div class="table100-nextcols">
+            <table>
+              <thead>
+                <tr class="row100 head">
+                  <th style="background-color:cadetblue; color:white; width:300px"class="cell100 column2">CONTRACTOR NO.</th>
+                  <th style="background-color:cadetblue; color:white; width:300px"class="cell100 column3">DEPARTMENT</th>
+                  <th style="background-color:cadetblue; color:white; width:300px"class="cell100 column4">DOCUMENT TYPE</th>
+                  <th style="background-color:cadetblue; color:white; width:300px"class="cell100 column5">DESCRIPTION</th>
+                  <th style="background-color:cadetblue; color:white; width:300px"class="cell100 column6">REVISION</th>
+                  <th style="background-color:cadetblue; color:white; width:300px"class="cell100 column7">DUE DATE</th>
+                  <th style="background-color:cadetblue; color:white; width:300px"class="cell100 column8">SUBMISSION DATE</th>
+                  <th style="background-color:cadetblue; color:white; width:300px"class="cell100 column9">TRANSMITTAL NUMBER</th>
+                  <th style="background-color:cadetblue; color:white; width:300px" class="cell100 column10">REASON OF ISSUE</th>
+                  <th style="background-color:cadetblue; color:white; width:300px"class="cell100 column11">DOCUMENT</th>
+                  <th style="background-color:cadetblue; color:white; width:300px"class="cell100 column12">APPROVAL DATE</th>
+                  <th style="background-color:cadetblue; color:white; width:300px"class="cell100 column13">RECEIPT TRANSMITTAL NO.</th>
+                  <th style="background-color:cadetblue; color:white; width:300px"class="cell100 column14">VIEW RESPONSE</th>
+                  <th style="background-color:cadetblue; color:white; width:300px"class="cell100 column15">APPROVAL CODE</th>
+                  <th style="background-color:cadetblue; color:white; width:300px"class="cell100 column16">STATUS</th>
+                  <th style="background-color:cadetblue; color:white; width:300px"class="cell100 column17">REMARKS</th>
+
+
+                </tr>
+
+              </thead>
+              <tbody>
+                {% for instance in object_list %}
+                  <tr class="row100 body">
+                      
+                      <td class="cell100 column2"style="width:300px">{{instance.contractor_documentno}}</td>
+                      <td class="cell100 column3"style="width:300px">{{instance.department}}</td>
+                      <td class="cell100 column4"style="width:300px">{{instance.document_type}}</td>
+                      <td class="cell100 column5"style="width:300px">{{instance.description}}</td>
+                      <td class="cell100 column6"style="width:300px">{{instance.revision}}</td>
+                      <td class="cell100 column7"style="width:300px">{{instance.due_date}}</td>
+                      <td class="cell100 column8"style="width:300px">{{instance.submission_date}}</td>
+                      <td class="cell100 column9"style="width:300px">{{instance.transmittal_number}}</td>
+                      <td class="cell100 column10"style="width:300px">{{instance.reason_of_issue}}</td>
+                      <td class="cell100 column11"style="width:300px"><a href="../media/{{instance.document}}" target="_blank"><i class="nav-icon fas fa-copy"></i></a></td>
+                      <td class="cell100 column12"style="width:300px">{{instance.aprroval_date}}</td>
+                      <td class="cell100 column13"style="width:300px">{{instance.receipt_transmittalno}}</td>
+                      <td class="cell100 column14"style="width:300px">{{instance.view_response}}</td>
+                      <td class="cell100 column15"style="width:300px">{{instance.aprroval_code}}</td>
+                      <td class="cell100 column16"style="width:300px">{{instance.status}}</td>
+                      <td class="cell100 column17"style="width:300px">{{instance.remarks}}</td>
+                      
+                
+                  </tr>
+                {% endfor %}
+                  <tr class="row100 body">
+                       <td class="cell100 column2" style="background-color: cadetblue;padding-left: 70px;">{{ form.contractor_documentno.errors }}{{form.contractor_documentno}}</td>
+                       <td class="cell100 column3" style="background-color: cadetblue;padding-left: 70px;">{{ form.department.errors }}{{form.department}}</td>
+                       <td class="cell100 column4" style="background-color: cadetblue;padding-left: 70px;">{{ form.document_type.errors }} {{form.document_type}}</td>
+                      <td class="cell100 column5" style="background-color: cadetblue;padding-left: 70px;">{{ form.description.errors }} {{form.description}}</td>
+                      <td class="cell100 column6" style="background-color: cadetblue;padding-left: 70px;">{{ form.revision.errors }} {{form.revision}}</td>
+
+                      <td class="cell100 column7" style="background-color: cadetblue;padding-left: 70px;">{{ form.due_date.errors }}{{form.due_date}}</td>
+                       <td class="cell100 column8" style="background-color: cadetblue;padding-left: 70px;">{{ form.submission_date.errors }}{{form.submission_date}}</td>
+                       <td class="cell100 column9" style="background-color: cadetblue;padding-left: 70px;">{{ form.transmittal_number.errors }} {{form.transmittal_number}}</td>
+                      <td class="cell100 column10" style="background-color: cadetblue;padding-left: 70px;">{{ form.reason_of_issue.errors }} {{form.reason_of_issue}}</td>
+                      <td class="cell100 column11" style="background-color: cadetblue;padding-left: 70px;">{{ form.document.errors }} {{form.document}}</td>
+
+                       <td class="cell100 column12" style="background-color: cadetblue;padding-left: 70px;">{{ form.aprroval_date.errors }}{{form.aprroval_date}}</td>
+                       <td class="cell100 column13" style="background-color: cadetblue;padding-left: 70px;">{{ form.receipt_transmittalno.errors }}{{form.receipt_transmittalno}}</td>
+                       <td class="cell100 column14" style="background-color: cadetblue;padding-left: 70px;">{{ form.view_response.errors }} {{form.view_response}}</td>
+                      <td class="cell100 column15" style="background-color: cadetblue;padding-left: 70px;">{{ form.aprroval_code.errors }} {{form.aprroval_code}}</td>
+                      <td class="cell100 column16" style="background-color: cadetblue;padding-left: 70px;">{{ form.status.errors }} {{form.status}}</td>
+                       <td class="cell100 column17" style="background-color: cadetblue;padding-left: 70px;">{{ form.remarks.errors }} {{form.remarks}}</td>
+
+
+
+                
+
+                        
+                    </tr>
+              </tbody>
+            </table>          
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-outline-info" style=" margin-top:5%;padding-left:2%;padding-right: 2% ;width:20%;margin-left:45%;background-color:white;color:cadetblue; "><h6>Add</h6></button>
+
+      </form>
+  </div>
+</div>
+  
+
+
+
+
+
+  <!--===============================================================================================-->  
+  <script src="../../static/table2/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/table2/vendor/bootstrap/js/popper.js"></script>
+  <script src="../../static/table2/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/table2/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/table2/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+  <script>
+    $('.js-pscroll').each(function(){
+      var ps = new PerfectScrollbar(this);
+
+      $(window).on('resize', function(){
+        ps.update();
+      })
+
+      $(this).on('ps-x-reach-start', function(){
+        $(this).parent().find('.table100-firstcol').removeClass('shadow-table100-firstcol');
+      });
+
+      $(this).on('ps-scroll-x', function(){
+        $(this).parent().find('.table100-firstcol').addClass('shadow-table100-firstcol');
+      });
+
+    }); 
+
+     function edit_material(url) {
+        $.getJSON(url,
+            function (data) {
+                var _data = JSON.parse(data);
+                var __data = _data[0]['fields'];
+                $("#_id").val(_data[0].pk);
+                $("#id_ADNOC_documentno").val(__data.ADNOC_documentno);
+          
+            })
+    }
+  </script>
+<!--===============================================================================================-->
+  <script src="../../static/table2/js/main.js"></script>
+                                
+ 
+
+{%endblock%}
+
+
+
+
+
+ -->

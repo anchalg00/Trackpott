@@ -1,0 +1,269 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trackpott</title>
+  <meta name="description" content="Blueprint: A basic template for a responsive multi-level menu" />
+  <meta name="keywords" content="blueprint, template, html, css, menu, responsive, mobile-friendly" />
+  <meta name="author" content="Codrops" />
+  <link rel="shortcut icon" href="../../static/navbar2/favicon.ico">
+  <link rel="stylesheet" type="text/css" href="../../static/navbar2/css/organicfoodicons.css" />
+  <link rel="stylesheet" type="text/css" href="../../static/navbar2/css/demo.css" />
+  <link rel="stylesheet" type="text/css" href="../../static/navbar2/css/component.css" />
+  <script src="../../static/navbar2/js/modernizr-custom.js"></script>
+</head>
+<body>
+   <style type="text/css">
+    body{
+
+       background-image: linear-gradient(to right, #003366,rgb(0,92,151), #4682B4,lightblue);
+    }
+    img{
+      opacity: 0.4px;
+    }
+
+  </style>
+
+  <!-- Main container -->
+  <div class="container">
+    <!-- Blueprint header -->
+    <header class="bp-header cf" >
+      <div class="dummy-logo" style="background: url('../../static/download.png');">
+        <strong><a class="navbar-brand" href="{% url 'home' %}" style="font-size: xx-large;margin-top: 10px;margin-left: 5px;color:white">TRACKPOTT</a></strong>
+
+      </div>
+      <div class="bp-header__main">
+
+
+        <!-- <nav class="bp-nav">
+        </nav> -->
+      </div>
+
+    </header>
+    <button class="action action--open" aria-label="Open Menu"><span class="icon icon--menu"></span></button>
+    <nav id="ml-menu" class="menu"style="background: url('../../static/download.png');">
+      <button class="action action--close" aria-label="Close Menu"><span class="icon icon--cross"></span></button>
+      <div class="menu__wrap" style="">
+        <ul data-menu="main" class="menu__level" tabindex="-1" role="menu" aria-label="All" style="padding-bottom: 10%">
+          <a href="{% url 'home' %}"> <li class="menu__item" role="menuitem"> <a href="{% url 'home' %}" class="menu__link" >HOME </a></li></a>
+          <a href="{% url 'home' %}"><li class="menu__item" role="menuitem"><a class="menu__link" href="{% url 'home' %}" >SCHEDULE</a></li></a>
+          <a href="{% url 'Progress' %}"><li class="menu__item" role="menuitem"><a class="menu__link" href="{% url 'Progress' %}">PROGRESS</a></li></a>
+          <a href="{% url 'document' %}"><li class="menu__item" role="menuitem"><a class="menu__link" href="{% url 'document' %}">MASTER DOC REG.</a></li></a>
+          <li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-4" aria-owns="submenu-4" href="#">ENGINEERING</a></li>
+          <li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-5" aria-owns="submenu-5" href="#">FABRICATION</a></li>
+          <li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-6" aria-owns="submenu-6" href="#">LOGISTIC</a></li>
+          <li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-7" aria-owns="submenu-7" href="#">INSTALLATION</a></li>
+          <li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-8" aria-owns="submenu-8" href="#">STORE</a></li>
+          <li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-9" aria-owns="submenu-9" href="#">QA/QC</a></li>
+          <li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-11" aria-owns="submenu-11" href="#">REPORTS</a></li>
+          <li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-11" aria-owns="submenu-11" href="#" >PROJECT DETAILS</a></li>
+          <hr>
+         <a href="{% url 'logout'%}" class="btn btn-outline-success my-2 my-sm-0" style="background-color: white; color: black; border-color: white; width:50%;margin-left:15%; margin-bottom: 20%">Logout</a>
+        </ul>
+
+        <ul data-menu="submenu-4" id="submenu-4" class="menu__level" tabindex="-1" role="menu" aria-label="Engineering" style="margin-top:50px">
+          <li class="menu__item"  role="menuitem" ><a class="menu__link" href="#">Site survey</a></li>
+          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Fabrication Drawing</a></li>
+          <a href="{% url 'RequirementList' %}"><li class="menu__item" role="menuitem"><a class="menu__link" href="{% url 'RequirementList' %}">Spool Wise Drawing</a></li></a>
+          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Test Package List</a></li>
+          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">As Built Drawings</a></li>
+        </ul>
+
+        <ul data-menu="submenu-5" id="submenu-5" class="menu__level"style="margin-top:50px" tabindex="-1"role="menu" aria-label="Fabrication">
+          <li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-5-1" aria-owns="submenu-5-1" href="#">Material</a></li>
+          <li class="menu__item" role="menuitem"><a class="menu__link"data-submenu="submenu-5-2" aria-owns="submenu-5-2" href="#">Pipe Spools</a></li>
+        </ul>
+                        <ul data-menu="submenu-5-1" id="submenu-5-1" class="menu__level"style="margin-top:50px" tabindex="-1" role="menu" aria-label="Material">
+                          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Mechanical</a></li>
+                          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Electrical</a></li>
+                          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Instrumentation</a></li>
+                          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Civil</a></li>
+                        </ul>
+                        <ul data-menu="submenu-5-2" id="submenu-5-2" class="menu__level"style="margin-top:50px" tabindex="-1" role="menu" aria-label="Pipe Spools">
+                          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Material Availability</a></li>
+                          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Material Receiving</a></li>
+                          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Voucher Receipt</a></li>
+                          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Cutting Plan</a></li>
+                          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Fit Up</a></li>
+                          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Welders Details</a></li>
+                          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Welding</a></li>
+                          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">NDT</a></li>
+                          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">PWHT</a></li>
+                          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Test Package Status</a></li>
+                          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Coating</a></li>
+                          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Painting</a></li>
+                          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Insulation</a></li>
+                        </ul>
+        <ul data-menu="submenu-6" id="submenu-6" class="menu__level"style="margin-top:50px" tabindex="-1" role="menu" aria-label="Logistic">
+          <li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-6-1" aria-owns="submenu-6-1" href="#">List</a></li>
+          <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Consignment Notes</a></li>
+        </ul>
+                      <ul data-menu="submenu-6-1" id="submenu-6-1" class="menu__level"style="margin-top:50px" tabindex="-1" role="menu" aria-label="List">
+                        <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Equipment List</a></li>
+                        <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Consumable List</a></li>
+                        <li class="menu__item" role="menuitem"><a class="menu__link" href="#">List of Spadding Material</a></li>
+                        <li class="menu__item" role="menuitem"><a class="menu__link" href="#">List of spool piece</a></li>
+                        <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Loose Material</a></li>
+                      </ul>
+        <ul data-menu="submenu-7" id="submenu-7" class="menu__level"style="margin-top:50px" tabindex="-1" role="menu" aria-label="Installation">
+                      <li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-7-1" aria-owns="submenu-7-1" href="#">Documentation</a></li>
+                      <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Micro Schedule</a></li>
+                      <li class="menu__item" role="menuitem"><a class="menu__link"data-submenu="submenu-7-2" aria-owns="submenu-7-2" href="#">Site Fabrication</a></li>
+                      <li class="menu__item" role="menuitem"><a class="menu__link"data-submenu="submenu-7-3" aria-owns="submenu-7-3" href="#">Pipe Spools</a></li>
+                      <li class="menu__item" role="menuitem"><a class="menu__link"data-submenu="submenu-7-4" aria-owns="submenu-7-4" href="#">Report</a></li>
+        </ul>
+                          <ul data-menu="submenu-7-1" id="submenu-7-1" class="menu__level"style="margin-top:50px" tabindex="-1" role="menu" aria-label="Documentation">
+                            <li class="menu__item" role="menuitem"><a class="menu__link" href="#">HSE Plan</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link" href="#">ELifting Plan</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Manpower Histogram</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Equipment List</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Scaffolding Requirement</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Isolation Spadding List</a></li>
+                          </ul>
+                          <ul data-menu="submenu-7-2" id="submenu-7-2" class="menu__level"style="margin-top:50px" tabindex="-1" role="menu" aria-label="Site Fabrication">
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Mechanical</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Electrical</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Instrumentation</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Civil</a></li>
+                          </ul>
+                          <ul data-menu="submenu-7-3" id="submenu-7-3" class="menu__level"style="margin-top:50px" tabindex="-1" role="menu" aria-label="Pipe Spools">
+                            <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Fit Up</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Welders Details</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Welding</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link" href="#">NDT</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link" href="#">PWHT</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Test Package Status</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Coating</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Painting</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link" href="#">Insulation</a></li>
+                          </ul>
+                          <ul data-menu="submenu-7-4" id="submenu-7-4" class="menu__level"style="margin-top:50px" tabindex="-1" role="menu" aria-label="Report">
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Fit Up Inspection Report</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Welding Inspection Report</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">PWHT Report</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">NDT Report</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Hydrotest Report</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Spool Release for Painting</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Painting Reports</a></li>
+                          </ul>
+        <ul data-menu="submenu-8" id="submenu-8" class="menu__level"style="margin-top:50px" tabindex="-1" role="menu" aria-label="Store">
+          <li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-8-1" aria-owns="submenu-8-1" href="#">Materials</a></li>
+        </ul>
+                        <ul data-menu="submenu-8-1" id="submenu-8-1" class="menu__level"style="margin-top:50px" tabindex="-1" role="menu" aria-label="Materials">
+                          <a href="{% url 'Store'%}"><li class="menu__item" role="menuitem"><a class="menu__link"  href="{% url 'Store' %}">Mechanical</a></li></a>
+                          <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Electrical</a></li>
+                          <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Instrumentation</a></li>
+                        </ul>
+        <ul data-menu="submenu-9" id="submenu-9" class="menu__level"style="margin-top:50px" tabindex="-1" role="menu" aria-label="QC">
+                          <li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-9-1" aria-owns="submenu-9-1" href="#">Documents</a></li>
+                          <li class="menu__item" role="menuitem"><a class="menu__link" data-submenu="submenu-9-2" aria-owns="submenu-9-2" href="#">Reports</a></li>
+        </ul>
+                          <ul data-menu="submenu-9-1" id="submenu-9-1" class="menu__level"style="margin-top:50px" tabindex="-1" role="menu" aria-label="Documents">
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">WPS</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">PQP</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Welder qualification List</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">ITP</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Hydrotest Procedure</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Painting Procedure</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">NDT Procedure</a></li>
+                          </ul>
+                          <ul data-menu="submenu-9-2" id="submenu-9-2" class="menu__level"style="margin-top:50px" tabindex="-1" role="menu" aria-label="Reports">
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Fit Up Inspection Report</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Welding Inspection Report</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">PWHT Report</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">NDT Report</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Hydrotest Report</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Spool Release for Painting</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Painting/Coating Reports</a></li>
+                            <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Dispatch/Spool Release Report</a></li>
+                          </ul>
+        <ul data-menu="submenu-11" id="submenu-11" class="menu__level"style="margin-top:50px" tabindex="-1" role="menu" aria-label="Project Details">
+          <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Contract Copy</a></li>
+          <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Engineering Package</a></li>
+        </ul>
+        <ul data-menu="submenu-10" id="submenu-10" class="menu__level"style="margin-top:50px" tabindex="-1" role="menu" aria-label="Reports">
+                      <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Schedule</a></li>
+                      <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Weekly Report</a></li>
+                      <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Daily Report</a></li>
+                      <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Material Issuing Voucher</a></li>
+                      <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">HSE Report</a></li>
+                      <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Audit Report</a></li>
+                      <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Documents</a></li>
+                      <li class="menu__item" role="menuitem"><a class="menu__link"  href="#">Close Out</a></li>
+        </ul>
+        </div>
+    </nav>
+    <div class="content">
+      {%block content %}
+      {%endblock%}
+
+    </div>
+  </div>
+
+
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <!-- /view -->
+  <script src="../../static/navbar2/js/classie.js"></script>
+  <script src="../../static/navbar2/js/dummydata.js"></script>
+  <script src="../../static/navbar2/js/main.js"></script>
+  <script>
+  (function() {
+    var menuEl = document.getElementById('ml-menu'),
+      mlmenu = new MLMenu(menuEl, {
+        // breadcrumbsCtrl : true, // show breadcrumbs
+        // initialBreadcrumb : 'all', // initial breadcrumb text
+        backCtrl : false, // show back button
+        // itemsDelayInterval : 60, // delay between each menu item sliding animation
+        onItemClick: loadDummyData // callback: item that doesn´t have a submenu gets clicked - onItemClick([event], [inner HTML of the clicked item])
+      });
+
+    // mobile menu toggle
+    var openMenuCtrl = document.querySelector('.action--open'),
+      closeMenuCtrl = document.querySelector('.action--close');
+
+    openMenuCtrl.addEventListener('click', openMenu);
+    closeMenuCtrl.addEventListener('click', closeMenu);
+
+    function openMenu() {
+      classie.add(menuEl, 'menu--open');
+      closeMenuCtrl.focus();
+    }
+
+    function closeMenu() {
+      classie.remove(menuEl, 'menu--open');
+      openMenuCtrl.focus();
+    }
+
+    // simulate grid content loading
+    var gridWrapper = document.querySelector('.content');
+
+    function loadDummyData(ev, itemName) {
+      ev.preventDefault();
+
+      closeMenu();
+      gridWrapper.innerHTML = '';
+      classie.add(gridWrapper, 'content--loading');
+      setTimeout(function() {
+        classie.remove(gridWrapper, 'content--loading');
+        gridWrapper.innerHTML = '<ul class="products">' + dummyData[itemName] + '<ul>';
+      }, 700);
+    }
+  })();
+  </script>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>

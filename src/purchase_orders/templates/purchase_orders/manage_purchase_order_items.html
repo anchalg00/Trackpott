@@ -1,0 +1,84 @@
+{% extends 'loggedbase.html' %}
+{% block link %} <a href="{% url 'ganttchart' project_list_first.id %}" class="nav-link" target="_blank">{% endblock %}
+
+{% block title %}
+Manage Purchase Order Items - {{purchase_order.po_number}}
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <b><a href="{% url 'purchase_orders:index' %}" class="btn btn-link"><i class="fas fa-arrow-left"></i> Back</a></b>
+        <div class="card">
+            <div class="card-body p-0">
+                {% for error in form.non_field_errors  %}
+                <p class="text-danger text-center font-weight-bold mt-2">{{ error }}</p>
+                {% endfor %}
+                <form id="frm_purchase_order-item" action="{% url 'purchase_orders:items' purchase_order.id %}"
+                    method="POST" autocomplete="off" novalidate>
+                    {% csrf_token %}
+                    <table class="table table-sm">
+                        <tr>
+                            <input type="hidden" id="_id" name="_id" value="{{initial_id}}">
+                            <th colspan="5">{{form.item}}<span
+                                    class="text-danger text-sm">{{form.item.errors.as_text}}</span>
+                            </th>
+                            <th colspan="5">{{form.quantity}}<span
+                                    class="text-danger text-sm">{{form.quantity.errors.as_text}}</span>
+                            </th>
+                            <th><input type="submit" name="" id="" class="btn btn-primary" value="Save"></th>
+                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Spec</th>
+                                <th width="25%">Material</th>
+                                <th>Rating</th>
+                                <th>Size 1</th>
+                                <th>Sch 1</th>
+                                <th>Size 2</th>
+                                <th>Sch 2</th>
+                                <th>Facing</th>
+                                <th>Quantity</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for purchase_order_item in purchase_order_items %}
+                            <tr>
+                                <td>{{ purchase_order_item.item }}</td>
+                                <td>{{ purchase_order_item.item.spec_s }}</td>
+                                <td>{{ purchase_order_item.item.material_s }}</td>
+                                <td>{{ purchase_order_item.item.rating_s }}</td>
+                                <td>{{ purchase_order_item.item.size1_s }}</td>
+                                <td>{{ purchase_order_item.item.sch1_s }}</td>
+                                <td>{{ purchase_order_item.item.size2_s }}</td>
+                                <td>{{ purchase_order_item.item.sch2_s }}</td>
+                                <td>{{ purchase_order_item.item.facing_s }}</td>
+                                <td>{{ purchase_order_item.quantity }}</td>
+                                <td class="text-center">
+                                    <i class="fa fa-pencil"
+                                        onclick="edit_purchase_order_item('{% url 'purchase_orders:get_purchase_order_item' purchase_order_item.id %}')"></i>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function edit_purchase_order_item(url) {
+        $.getJSON(url,
+            function (data) {
+                console.log(data)
+                var _data = JSON.parse(data);
+                var __data = _data[0]['fields'];
+                $("#_id").val(_data[0].pk);
+                $("#id_item").val(__data.item);
+                $("#id_quantity").val(__data.quantity);
+            })
+    }
+</script>
+{% endblock %}

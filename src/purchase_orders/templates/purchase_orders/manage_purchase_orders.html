@@ -1,0 +1,111 @@
+{% extends 'loggedbase.html' %}
+{% block link %} <a href="{% url 'ganttchart' project_list_first.id %}" class="nav-link" target="_blank">{% endblock %}
+
+{% block title %}
+Manage Purchase Orders
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body p-0">
+                <h5 class="pt-2 pl-2"><i class="fa fa-search"></i> Search PO</h5>
+                <hr>
+                <form class="form-horizontal p-2" action="{% url 'purchase_orders:index' %}" method="GET"
+                    autocomplete="off" novalidate>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">PO Number</label>
+                                <input type="text" id="po_number" name="po_number" class="form-control"
+                                    value="{{request.GET.po_number}}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <a href="{% url 'purchase_orders:index' %}" class="btn btn-default btn-outline">Reset</a>
+                    </div>
+                </form>
+                <form id="frm_purchase_order" action="{% url 'purchase_orders:index' %}" method="POST"
+                    autocomplete="off" novalidate>
+                    {% csrf_token %}
+                    <table class="table table-sm">
+                        <tr>
+                            <input type="hidden" id="_id" name="_id" value="{{initial_id}}">
+                            <th>{{form.po_number}}<span
+                                    class="text-danger text-sm">{{form.po_number.errors.as_text}}</span>
+                            </th>
+                            <th>{{form.vendor_name}}<span
+                                    class="text-danger text-sm">{{form.vendor_name.errors.as_text}}</span>
+                            </th>
+                            <th>{{form.delivery_date}}<span
+                                    class="text-danger text-sm">{{form.delivery_date.errors.as_text}}</span>
+                            </th>
+                            <th>{{form.address}}<span class="text-danger text-sm">{{form.address.errors.as_text}}</span>
+                            </th>
+                            <th>{{form.po_status}}<span
+                                    class="text-danger text-sm">{{form.po_status.errors.as_text}}</span>
+                            </th>
+                            <th><input type="submit" name="" id="" class="btn btn-primary" value="Save"></th>
+                        </tr>
+                        <thead>
+                            <tr>
+                                <th>PO No.</th>
+                                <th>Vendor</th>
+                                <th>Delivery Date</th>
+                                <th>Address</th>
+                                <th>PO Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for purchase_order in purchase_orders %}
+                            <tr>
+                                <td>{{ purchase_order.po_number }}</td>
+                                <td>{{ purchase_order.vendor_name }}</td>
+                                <td>{{ purchase_order.delivery_date|date:'d-m-Y' }}</td>
+                                <td>{{ purchase_order.address }}</td>
+                                <td>{% if purchase_order.po_status == 'd'%}Delivered{%else%}Open{%endif%}</td>
+                                <td class="text-center">
+                                    {% if purchase_order.po_status == 'op' %}
+                                    <i class="fa fa-pencil"
+                                        onclick="edit_purchase_order('{% url 'purchase_orders:get_purchase_order' purchase_order.id %}')"></i>
+                                    <a href="{% url 'purchase_orders:items' purchase_order.id %}"><i
+                                            class="ml-2 fa fa-plus"></i></a>
+                                    {% endif %}
+                                    <a class="text-info" target="_blank"
+                                        href="{% url 'purchase_orders:pdf_report' purchase_order.id %}"><i
+                                            class="ml-2 fa fa-file-pdf-o"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function edit_purchase_order(url) {
+        $.getJSON(url,
+            function (data) {
+                var _data = JSON.parse(data);
+                var __data = _data[0]['fields'];
+                $("#_id").val(_data[0].pk);
+                $("#id_po_number").val(__data.po_number);
+                $("#id_vendor_name").val(__data.vendor_name);
+                var _delivery_date = new Date(__data.delivery_date);
+                var _date = _delivery_date.getDate().toLocaleString().length == 1 ? '0' + _delivery_date.getDate() :
+                    _delivery_date.getDate();
+                var __month = Number(_delivery_date.getMonth() + 1);
+                var _month = _delivery_date.getMonth().toLocaleString().length == 1 ? '0' + __month : __month;
+                $("#id_delivery_date").val(_date + "-" + _month + "-" +
+                    _delivery_date.getFullYear());
+                $("#id_address").val(__data.address);
+                $("#id_po_status").val(__data.po_status);
+            })
+    }
+</script>
+{% endblock %}

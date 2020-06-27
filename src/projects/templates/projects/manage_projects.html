@@ -1,0 +1,122 @@
+{% extends 'loggedbase.html' %}
+{% block link %} <a href="{% url 'ganttchart' project_list_first.id %}" class="nav-link" target="_blank">{% endblock %}
+
+{% block title %}
+Manage Projects for {{schedule.name}}
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body p-0">
+                <h5 class="pt-2 pl-2"><i class="fa fa-search"></i> Search Project</h5>
+                <hr>
+                <form class="form-horizontal p-2" action="{% url 'projects:index' %}" method="GET" autocomplete="off"
+                    novalidate>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Receipt Number</label>
+                                <input type="text" id="receipt_number" name="receipt_number" class="form-control"
+                                    value="{{request.GET.receipt_number}}" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Project Name</label>
+                                <input type="text" id="name" name="name" class="form-control"
+                                    value="{{request.GET.name}}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <a href="{% url 'projects:index' %}" class="btn btn-default btn-outline">Reset</a>
+                    </div>
+                </form>
+                <form id="frm_project" action="{% url 'projects:index' %}" method="POST" autocomplete="off" novalidate>
+                    {% csrf_token %}
+                    <table class="table table-sm">
+                        <tr>
+                            <input type="hidden" id="_id" name="_id" value="{{initial_id}}">
+                            <th>{{form.receipt_number}}<span
+                                    class="text-danger text-sm">{{form.receipt_number.errors.as_text}}</span>
+                            </th>
+                            <th>{{form.contract_name}}<span
+                                    class="text-danger text-sm">{{form.contract_name.errors.as_text}}</span>
+                            </th>
+                            <th>{{form.address}}<span class="text-danger text-sm">{{form.address.errors.as_text}}</span>
+                            <th>{{form.description}}<span
+                                    class="text-danger text-sm">{{form.description.errors.as_text}}</span>
+                            <th>{{form.delivery_date}}<span
+                                    class="text-danger text-sm">{{form.delivery_date.errors.as_text}}</span>
+                            </th>
+                            <th>{{form.assigned_for}}<span
+                                    class="text-danger text-sm">{{form.assigned_for.errors.as_text}}</span>
+                            </th>
+                            <th><input type="submit" name="" id="" class="btn btn-primary" value="Save"></th>
+                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Receipt No.</th>
+                                <th>Contract Name</th>
+                                <th>Address</th>
+                                <th>Description</th>
+                                <th>Delivery Date</th>
+                                <th>Assigned For</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for project in projects %}
+                            <tr>
+                                <td>{{ project.receipt_number }}</td>
+                                <td>{{ project.contract_name }}</td>
+                                <td>{{ project.address }}</td>
+                                <td>{{ project.description }}</td>
+                                <td>{{ project.delivery_date|date:'d-m-Y' }}</td>
+                                <td>{{ project.assigned_for.username }}</td>
+                                <td class="text-center">
+                                    <i class="fa fa-pencil"
+                                        onclick="edit_project('{% url 'projects:get_project' project.id %}')"></i>
+                                    <a href="{% url 'projects:items' project.id %}"><i class="ml-2 fa fa-plus"></i></a>
+                                    <a class="text-info" target="_blank"
+                                        href="{% url 'projects:pdf_report' project.id %}"><i
+                                            class="ml-2 fa fa-file-pdf-o"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function edit_project(url) {
+        $.getJSON(url,
+            function (data) {
+                console.log(data)
+                //var _data = JSON.parse(data);
+                var __data = data['project'][0];
+                $("#_id").val(__data.id);
+                $("#id_receipt_number").val(__data.receipt_number);
+                $("#id_contract_name").val(__data.contract_name);
+                $("#id_address").val(__data.address);
+                $("#id_assigned_for").val(data.username);
+                $("#id_description").val(__data.description);
+                if (__data.delivery_date) {
+                    var _delivery_date = new Date(__data.delivery_date);
+                    var _date = _delivery_date.getDate().toLocaleString().length == 1 ? '0' + _delivery_date
+                        .getDate() :
+                        _delivery_date.getDate();
+                    var __month = Number(_delivery_date.getMonth() + 1);
+                    var _month = _delivery_date.getMonth().toLocaleString().length == 1 ? '0' + __month : __month;
+                    $("#id_delivery_date").val(_date + "-" + _month + "-" +
+                        _delivery_date.getFullYear());
+                }
+            })
+    }
+</script>
+{% endblock %}

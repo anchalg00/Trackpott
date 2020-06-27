@@ -1,0 +1,66 @@
+{% extends 'loggedbase.html' %}
+{% block link %} <a href="{% url 'ganttchart' project_list_first.id %}" class="nav-link" target="_blank">{% endblock %}
+{% block title %}
+Approval Requested Materials
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body p-0">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Receipt No.</th>
+                            <th>Item Name</th>
+                            <th>Quantity</th>
+                            <th width="30%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%if pending_items %}
+                        {% for pending_item in pending_items %}
+                        <tr>
+                            <td>{{ pending_item.project.receipt_number }}</td>
+                            <td>{{ pending_item.item }}</td>
+                            <td>{{ pending_item.quantity }}</td>
+                            <td>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="quantity_{{pending_item.id}}"
+                                        value="{{pending_item.quantity}}">
+                                    <div class="input-group-append">
+                                        <a href="javascript:void(0);"
+                                            onclick="update_status('{% url 'projects:approve_item' pending_item.id %}','{{pending_item.id}}')"
+                                            class="btn btn-success">Make Approve</a>
+                                        <a href="javascript:void(0);"
+                                            onclick="$('#quantity_{{pending_item.id}}').val(0);"
+                                            class="btn btn-danger">Reject</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {%else%}
+                        <tr>
+                            <td colspan="4">Request not found</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function update_status(url, id) {
+        var quantity = $("#quantity_" + id).val();
+        if (quantity == '' && quantity == 0) {
+            alert('Please enter the quantity')
+        } else {
+            window.open(url + "?quantity=" + quantity, '_blank');
+        }
+    }
+
+    
+</script>
+{% endblock %}

@@ -1,0 +1,27 @@
+{%extends 'loggedbase.html'%}
+{% block link %} <a href="{% url 'ganttchart' project_list_first.id %}" class="nav-link" target="_blank">{% endblock %}
+
+{% load crispy_forms_tags %}
+{%block content%}
+
+</style>
+
+<div class="jumbotron" style="width: 100%">
+
+
+  <form method="post">
+
+    {% csrf_token %}
+    <h2> ADD ENTRY </h2>
+    <br>
+    <div style=" background-color: #343a40; width: 500px; margin: 0 auto">
+     <div style="width: 300px; margin: 0 auto; padding: 20px; color: #FFF;">
+      {{form|crispy}}
+       <button type="submit" class="btn btn-primary" style="background-color:#343a40 ">Add</button>
+      </div>
+    </div>
+    
+  </form>
+
+</div>
+{%endblock%}

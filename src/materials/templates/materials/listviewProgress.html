@@ -1,0 +1,408 @@
+ {%extends 'loggedbase.html'%}
+{% block link %} <a href="{% url 'ganttchart' project_list_first.id %}" class="nav-link" target="_blank">{% endblock %}
+
+{% block title %}PROGRESS{% endblock %}
+
+ {%block content%}
+ <style type="text/css">
+   body{
+    overflow-y: scroll;
+   }
+
+   .padding-style{
+    padding-left: 15px;
+   }
+   h3,h6{
+       display:inline;
+   }
+   p{
+       display:block;
+   }
+
+ </style>
+
+ {% load crispy_forms_tags %}
+ <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png"      href="../../static/table2/images/icons/favicon.ico"/>
+  <link rel="stylesheet" type="text/css" href="../../static/table2/vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../../static/table2/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="../../static/table2/vendor/animate/animate.css">
+  <link rel="stylesheet" type="text/css" href="../../static/table2/vendor/select2/select2.min.css">
+  <link rel="stylesheet" type="text/css" href="../../static/table2/vendor/perfect-scrollbar/perfect-scrollbar.css">
+  <link rel="stylesheet" type="text/css" href="../../static/table2/css/util.css">
+
+
+
+  <div style="padding:20px;">
+
+   
+    <hr>
+    <br>
+    <img src="../../static/scurve.png">
+    <br>
+    <hr>
+    <br>
+  <form method="post" action="{% url 'Progress' %}">
+           {% csrf_token %}
+           {{ form.non_field_errors }}
+
+
+
+      {% for instance in object_list %}
+       {{ instance.progress_p.errors }}
+       <p>
+          <h6><label for="{{ instance.progress_p.id_for_label }}"> Progress : </label></h6>
+          {{ instance.progress_p }}
+         </p>
+<br>
+<p></p>
+          {{ instance.variance_p.errors }}
+          <h6 class="padding-style"><label for="{{ instance.variance_p.id_for_label }}"> Variance : </label></h6>
+          {{ instance.variance_p }}
+
+
+          </p>
+<br>
+          {{ instance.remarks_p.errors }}
+          <h6 class="padding-style"><label for="{{ instance.remarks_p.id_for_label }}"> Remarks : </label></h6>
+          {{ instance.remarks_p }}
+
+          <br>
+          <hr>
+          <br>
+
+          {{ instance.mdr_progress_m.errors }}
+          <h3><label for="{{ instance.mdr_progress_m.id_for_label }}">MDR Progress : </label></h3>
+          {{ instance.mdr_progress_m }}
+
+
+          {{ instance.variance_m.errors }}
+          <h3 class="padding-style"><label for="{{ instance.variance_m.id_for_label }}"> Variance : </label></h3>
+          {{ instance.variance_m }}
+
+          {{ instance.remarks_m.errors }}
+          <h3 class="padding-style"><label for="{{ instance.remarks_m.id_for_label }}"> Remarks : </label></h3>
+          {{ instance.remarks_m }}
+
+
+          <br>
+          <hr>
+          <br>
+
+          {{ instance.procurement_progress_pp.errors }}
+          <h3><label for="{{ instance.procurement_progress_pp.id_for_label }}">Procurement Progress : </label></h3>
+          {{ instance.procurement_progress_pp }}
+
+
+          {{ instance.variance_pp.errors }}
+          <h3 class="padding-style"><label for="{{ instance.variance_pp.id_for_label }}"> Variance : </label></h3>
+          {{ instance.variance_pp }}
+
+          {{ instance.remarks_pp.errors }}
+          <h3 class="padding-style"><label for="{{ instance.remarks_pp.id_for_label }}"> Remarks : </label></h3>
+          {{ instance.remarks_pp }}
+
+
+
+
+         <br>
+         <hr>
+         <br>
+
+         {{ instance.eng_progress_ep.errors }}
+          <h3><label for="{{ instance.eng_progress_ep.id_for_label }}">Engineering Progress : </label></h3>
+          {{ instance.eng_progress_ep }}
+
+
+          {{ instance.variance_ep.errors }}
+          <h3 class="padding-style"><label for="{{ instance.variance_ep.id_for_label }}"> Variance : </label></h3>
+          {{ instance.variance_ep }}
+
+          {{ instance.remarks_ep.errors }}
+          <h3 class="padding-style"><label for="{{ instance.remarks_ep.id_for_label }}"> Remarks : </label></h3>
+          {{ instance.remarks_ep }}
+
+
+
+
+         <br>
+         <hr>
+         <br>
+         {{ instance.fab_progress_fp.errors }}
+          <h3><label for="{{ instance.fab_progress_fp.id_for_label }}">Fabrication Progress : </label></h3>
+          {{ instance.fab_progress_fp }}
+
+
+          {{ instance.variance_fp.errors }}
+          <h3 class="padding-style"><label for="{{ instance.variance_fp.id_for_label }}"> Variance : </label></h3>
+          {{ instance.variance_fp }}
+
+          {{ instance.remarks_fp.errors }}
+          <h3 class="padding-style"><label for="{{ instance.remarks_fp.id_for_label }}"> Remarks : </label></h3>
+          {{ instance.remarks_fp }}
+
+
+
+
+         <br>
+         <hr>
+         <br>
+         {{ instance.install_progress_ip.errors }}
+          <h3><label for="{{ instance.install_progress_ip.id_for_label }}">Installation Progress : </label></h3>
+          {{ instance.install_progress_ip }}
+
+
+          {{ instance.variance_ip.errors }}
+          <h3 class="padding-style"><label for="{{ instance.variance_ip.id_for_label }}"> Variance : </label></h3>
+          {{ instance.variance_ip }}
+
+          {{ instance.remarks_ip.errors }}
+          <h3 class="padding-style"><label for="{{ instance.remarks_ip.id_for_label }}"> Remarks : </label></h3>
+          {{ instance.remarks_ip }}
+
+
+
+
+         <br>
+         <hr>
+         <br>
+
+
+
+      {% endfor %}
+          <div id="form" style="display:none">
+            <div class="row">
+          <div style="width:25%" class="col-md-3 col-sm-9">
+          {{ form.progress_p.errors }}
+          <h3><label for="{{ form.progress_p.id_for_label }}"> Progress : </label></h3>
+          {{ form.progress_p }}
+        </div>
+
+        <div style="width:25%" class="col-md-3 col-sm-9">
+          {{ form.variance_p.errors }}
+          <h3 class="padding-style"><label for="{{ form.variance_p.id_for_label }}"> Variance : </label></h3>
+          {{ form.variance_p }}
+        </div>
+          <div style="width:25%" class="col-md-3 col-sm-9">
+          {{ form.remarks_p.errors }}
+          <h3 class="padding-style"><label for="{{ form.remarks_p.id_for_label }}"> Remarks : </label></h3>
+          {{ form.remarks_p }}
+        </div>
+      </div>
+
+          <br>
+          <hr>
+          <br>
+          <div class="row">
+          <div style="width:25%" class="col-md-3 col-sm-9">
+
+          {{ form.mdr_progress_m.errors }}
+          <h3><label for="{{ form.mdr_progress_m.id_for_label }}">MDR Progress </label></h3>
+          {{ form.mdr_progress_m }}
+        </div>
+
+  <div style="width:25%" class="col-md-3 col-sm-9">
+          {{ form.variance_m.errors }}
+          <h3 class="padding-style"><label for="{{ form.variance_m.id_for_label }}">MDR Variance</label></h3>
+          {{ form.variance_m }}
+</div>
+  <div style="width:25%" class="col-md-3 col-sm-9">
+          {{ form.remarks_m.errors }}
+          <h3 class="padding-style"><label for="{{ form.remarks_m.id_for_label }}">MDR Remarks</label></h3>
+          {{ form.remarks_m }}
+        </div>
+      </div>
+
+
+          <br>
+          <hr>
+          <br>
+          <div class="row">
+          <div style="width:25%" class="col-md-3 col-sm-9">
+          {{ form.procurement_progress_pp.errors }}
+          <h3><label for="{{ form.procurement_progress_pp.id_for_label }}">Procurement Progress : </label></h3>
+          {{ form.procurement_progress_pp }}</div>
+
+          <div style="width:25%" class="col-md-3 col-sm-9">
+          {{ form.variance_pp.errors }}
+          <h3 class="padding-style"><label for="{{ form.variance_pp.id_for_label }}">Procurement Variance : </label></h3>
+          {{ form.variance_pp }}</div>
+
+          <div style="width:25%" class="col-md-3 col-sm-9">
+
+          {{ form.remarks_pp.errors }}
+          <h3 class="padding-style"><label for="{{ form.remarks_pp.id_for_label }}">Procurement Remarks : </label></h3>
+          {{ form.remarks_pp }}
+           </div>
+         </div>
+
+
+
+         <br>
+         <hr>
+         <br>
+        <div class="row">
+          <div style="width:25%" class="col-md-3 col-sm-9">
+         {{ form.eng_progress_ep.errors }}
+          <h3><label for="{{ form.eng_progress_ep.id_for_label }}">Engineering Progress : </label></h3>
+          {{ form.eng_progress_ep }}</div>
+
+          <div style="width:25%" class="col-md-3 col-sm-9">
+          {{ form.variance_ep.errors }}
+          <h3 class="padding-style"><label for="{{ form.variance_ep.id_for_label }}">Engineering Variance : </label></h3>
+          {{ form.variance_ep }}</div>
+          <div style="width:25%" class="col-md-3 col-sm-9">
+          {{ form.remarks_ep.errors }}
+          <h3 class="padding-style"><label for="{{ form.remarks_ep.id_for_label }}">Engineering Remarks : </label></h3>
+          {{ form.remarks_ep }}</div>
+        </div>
+
+
+
+
+         <br>
+         <hr>
+         <br>
+         <div class="row">
+          <div style="width:25%" class="col-md-3 col-sm-9">
+         {{ form.fab_progress_fp.errors }}
+          <h3><label for="{{ form.fab_progress_fp.id_for_label }}">Fabrication Progress : </label></h3>
+          {{ form.fab_progress_fp }}</div>
+
+          <div style="width:25%" class="col-md-3 col-sm-9">
+          {{ form.variance_fp.errors }}
+          <h3 class="padding-style"><label for="{{ form.variance_fp.id_for_label }}">Fabrication Variance : </label></h3>
+          {{ form.variance_fp }}</div>
+          <div style="width:25%" class="col-md-3 col-sm-9">
+          {{ form.remarks_fp.errors }}
+          <h3 class="padding-style"><label for="{{ form.remarks_fp.id_for_label }}">Fabrication Remarks : </label></h3>
+          {{ form.remarks_fp }}</div>
+        </div>
+
+
+
+
+         <br>
+         <hr>
+         <br>
+         <div class="row">
+          <div style="width:25%" class="col-md-3 col-sm-9">
+         {{ form.install_progress_ip.errors }}
+          <h3><label for="{{ form.install_progress_ip.id_for_label }}">Installation Progress : </label></h3>
+          {{ form.install_progress_ip }}</div>
+
+          <div style="width:25%" class="col-md-3 col-sm-9">
+          {{ form.variance_ip.errors }}
+          <h3 class="padding-style"><label for="{{ form.variance_ip.id_for_label }}">Installation Variance : </label></h3>
+          {{ form.variance_ip }}</div>
+
+          <div style="width:25%" class="col-md-3 col-sm-9">
+          {{ form.remarks_ip.errors }}
+          <h3 class="padding-style"><label for="{{ form.remarks_ip.id_for_label }}">Installation Remarks : </label></h3>
+          {{ form.remarks_ip }}</div>
+        </div>
+
+
+
+
+         <br>
+         <hr>
+         <br>
+
+        <button type="submit" class="btn " style="background-color:white;margin-left:45%;color:cadetblue; ">Add</button>
+        <br>
+        <hr>
+        <br>
+
+        </div>
+
+          </form>
+</div>
+
+<button type="button" id="show" class="btn btn-outline-info" data-toggle="modal" data-target="#exampleModalCenter"style="margin-left:35%;border: 2.5px solid ;width: 300px;height: 75px;" >
+  Add New Report
+</button>
+</div>
+
+   <!--  <button type="button" class=" btn btn-outline-info" data-toggle="modal" data-target="#exampleModalCenter"
+     style="margin-right:20px;color: white;border: 2.5px solid white;width: 300px;height: 75px;" >
+     Add New Record
+     </button>
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="exampleModalLongTitle">Add Details</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form method="post">
+              {% csrf_token %}
+              <div style=" background-color: cadetblue; width: 100%; margin: 0 auto;">
+                <div style="width: 100%; margin: 0 auto; padding: 20px; color: white;">
+                  {{form|crispy}}
+                  <button type="submit" class="btn btn-primary" style="background-color:white;color:cadetblue; ">Add</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Go Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+ -->
+
+  <!--===============================================================================================-->
+  <script src="../../static/table2/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/table2/vendor/bootstrap/js/popper.js"></script>
+  <script src="../../static/table2/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/table2/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+  <script src="../../static/table2/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+  <script>
+    $('.js-pscroll').each(function(){
+      var ps = new PerfectScrollbar(this);
+
+      $(window).on('resize', function(){
+        ps.update();
+      })
+
+      $(this).on('ps-x-reach-start', function(){
+        $(this).parent().find('.table100-firstcol').removeClass('shadow-table100-firstcol');
+      });
+
+      $(this).on('ps-scroll-x', function(){
+        $(this).parent().find('.table100-firstcol').addClass('shadow-table100-firstcol');
+      });
+
+    });
+
+
+$("#show").click(function(){
+  $("#form").show();
+});
+$("#hide").click(function(){
+  $("p").hide();
+});
+  </script>
+<!--===============================================================================================-->
+  <script src="../../statis/table2/js/main.js"></script>
+
+{%endblock%}
+
+
+
+
+
