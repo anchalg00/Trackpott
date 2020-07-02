@@ -1,0 +1,158 @@
+{% extends 'loggedbase.html' %}
+{% block title %}
+Chart Report for {{schedule.name}}
+{% endblock %}
+{% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
+<div class="container-fluid form-group"><a href="{% url 'projects:edit_schedule_info' %}" class="btn btn-primary">Edit
+        Info</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="printHTML('print_this')" class="btn btn-info"><i
+            class="fa fa-print"></i></a>&nbsp;&nbsp;<a href="{% url 'projects:excel_activity' %}"
+        class="btn btn-info">Switch Excel
+        View</a></div>
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body p-4 container">
+                <canvas id="line-chart" width="800" height="250"></canvas>
+                <div id="print_this">
+                    <br>
+                    <table border="1" width="100%">
+                        <tr>
+                            <td width="25%"><b>Project Description</b></td>
+                            <td>{{schedule_info.project_description}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Date</b></td>
+                            <td>{{schedule_info.project_date}}</td>
+                        </tr>
+                    </table>
+                    <br>
+                    <table border="1" width="100%">
+                        <tr>
+                            <td width="18%"><b>Weekly Progress</b></td>
+                            <td>{{schedule_info.weekly_progress}}</td>
+                            <td width="18%"><b>Cummlative Progress</b></td>
+                            <td>{{schedule_info.cummlative_progress}}</td>
+                            <td width="10%"><b>Variance</b></td>
+                            <td>{{schedule_info.variance}}</td>
+                        </tr>
+                    </table>
+                    <br>
+                    <table border="1" width="100%">
+                        <tr>
+                            <td width="25%"><b>Progress Statistic</b></td>
+                            <td>{{schedule_info.progress_statistic}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Procurement</b></td>
+                            <td>{{schedule_info.procurement}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>MDR</b></td>
+                            <td>{{schedule_info.mdr}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Fabrication</b></td>
+                            <td>{{schedule_info.fabrication}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Installation</b></td>
+                            <td>{{schedule_info.installation}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Reason for Variance</b></td>
+                            <td>{{schedule_info.reason_for_variance}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Detailed progress for week</b></td>
+                            <td>{{schedule_info.detailed_progress_for_week}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Planned progress for next week</b></td>
+                            <td>{{schedule_info.planned_progress_for_next_week}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Area of Concerns</b></td>
+                            <td>{{schedule_info.area_of_concerns}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
+                {% for schedule_document in schedule_documents %}
+                <p>{{forloop.counter}}. <a href="/media/{{schedule_document.file_url}}"
+                        target="_blank">{{schedule_document.file_url}}</a></p>
+                {% endfor %}
+                <br>
+                <form id="frm_profile_picture" enctype="multipart/form-data" method="POST"
+                    action="{% url 'projects:chart_report' %}" autocomplete="off">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <button type="submit" class="btn btn-primary btn-rounded">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    var year_months = "{{year_months|safe}}";
+    year_months = year_months.replace(/'/g, "")
+    year_months = year_months.slice(1, -1);
+    year_months = year_months.split(',');
+    var plan_value = "{{plan_value|safe}}";
+    plan_value = plan_value.slice(1, -1);
+    plan_value = plan_value.split(',');
+    var actual_value = "{{actual_value|safe}}";
+    actual_value = actual_value.slice(1, -1);
+    actual_value = actual_value.split(',');
+    if (year_months) {
+        new Chart(document.getElementById("line-chart"), {
+            type: 'line',
+            data: {
+                labels: year_months,
+                datasets: [{
+                    data: plan_value,
+                    label: "Plan",
+                    borderColor: "#3e95cd",
+                    fill: false
+                }, {
+                    data: actual_value,
+                    label: "Actual",
+                    borderColor: "#8e5ea2",
+                    fill: false
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'S-Curve Report'
+                },
+                animation: {
+                    onComplete: function () {
+                        // set the PDF printing trigger when the animation is done
+                        // to have this working, the phantom-pdf menu in the left must
+                        // have the wait for printing trigger option selected
+                        window.JSREPORT_READY_TO_START = true
+                    }
+                }
+            }
+        });
+    }
+
+    function printHTML(divId) {
+        var printContents = document.getElementById(divId).innerHTML;
+        var originalContents = document.body.innerHTML;
+        var canvas = document.getElementById('line-chart');
+        var html = '<html><body><img src="' + canvas.toDataURL() + '"/><br><br>' + printContents + '</body></html>';
+        var printWindow = window.open('', 'Print Window');
+        printWindow.document.write(html);
+        //printWindow.document.write('<html><head><title>Print Window</title>');
+        //printWindow.document.write('</head><body >');
+        //printWindow.document.write('<img src=\'');
+        //printWindow.document.write(canvas.toDataURL());
+        //printWindow.document.write('\' /></body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'loggedbase.html' %}
+{% block title %}
+Manage Projects for {{schedule.name}}
+{% endblock %}
+{% block content %}
+<section class="content">
+    <form class="form-horizontal" method="POST" action="{% url 'projects:project_activity' %}">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        {%for err in formset.non_form_errors%}
+        <div class="text-danger text-center">{{err}}</div>
+        {% endfor %}
+        <table class="table table-bordered" id="activity_table">
+
+            <thead>
+                <tr>
+                    <td>Activity Name</td>
+                    <td>Weightage</td>
+                    <td>Action</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for form in formset %}
+                <tr>
+                    <td>{{form.name}}</td>
+                    <td>{{form.weightage}}{{form.id}}</td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="javascript:void(0);" class="btn btn-info" onclick="add_new_row()">Add new row</a>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</section>
+<script>
+    function edit_project(url) {
+        $.getJSON(url,
+            function (data) {
+                console.log(data)
+                //var _data = JSON.parse(data);
+                var __data = data['project'][0];
+                $("#_id").val(__data.id);
+                $("#id_receipt_number").val(__data.receipt_number);
+                $("#id_contract_name").val(__data.contract_name);
+                $("#id_address").val(__data.address);
+                $("#id_assigned_for").val(data.username);
+                $("#id_description").val(__data.description);
+                if (__data.delivery_date) {
+                    var _delivery_date = new Date(__data.delivery_date);
+                    var _date = _delivery_date.getDate().toLocaleString().length == 1 ? '0' + _delivery_date
+                        .getDate() :
+                        _delivery_date.getDate();
+                    var __month = Number(_delivery_date.getMonth() + 1);
+                    var _month = _delivery_date.getMonth().toLocaleString().length == 1 ? '0' + __month : __month;
+                    $("#id_delivery_date").val(_date + "-" + _month + "-" +
+                        _delivery_date.getFullYear());
+                }
+            })
+    }
+</script>
+{% endblock %}
+{% block js_scripts%}
+<script type='text/javascript'>
+    $(document).ready(function () {
+
+    });
+
+    function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    function replaceAll(str, term, replacement) {
+        return str.replace(new RegExp(escapeRegExp(term), 'g'), replacement);
+    }
+
+    function add_new_row() {
+        var last_row = $("#activity_table tbody tr:nth-last-child(1)").html();
+        var _last_row = $("#activity_table tbody tr:nth-last-child(1) td:nth-child(1)").html();
+        var _id = $.parseHTML(_last_row)[0].id;
+        _id = _id.substring(8)
+        _id = _id.slice(0, -5);
+        nextId = Number(_id) + 1;
+        var updatedHTML = replaceAll(last_row, "form-" + _id, "form-" + nextId)
+        $("#activity_table tbody").append("<tr>" + updatedHTML + "</tr>");
+        $('#id_form-TOTAL_FORMS').val(Number(nextId) + 1);
+    }
+</script>
+{% endblock %}

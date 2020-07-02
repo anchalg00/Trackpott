@@ -1,6 +1,4 @@
 {% extends 'loggedbase.html' %}
-{% block link %} <a href="{% url 'ganttchart' project_list_first.id %}" class="nav-link" target="_blank">{% endblock %}
-
 {% block title %}
 Pending Materials - Report <a
     href="{% url 'projects:pending_material_report' %}?receipt_number={{ request.GET.receipt_number }}&export=pdf"
@@ -58,7 +56,7 @@ Pending Materials - Report <a
                         {% endfor %}
                         {% else %}
                         <tr>
-                            <td colspan="4" class="text-danger text-center font-weight-bold">Pending materials not
+                            <td colspan="7" class="text-danger text-center font-weight-bold">Pending materials not
                                 found!</td>
                         </tr>
                         {% endif %}

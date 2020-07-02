@@ -1,0 +1,138 @@
+{% extends 'loggedbase.html' %}
+{% block title %}
+Manage activity for {{schedule.name}}
+{% endblock %}
+{% block content %}
+<style>
+    .cell-border:hover {
+        cursor: pointer;
+        background: green;
+    }
+</style>
+<div class="container-fluid form-group"><a href="{% url 'projects:chart_report' %}" class="btn btn-primary">Switch Chart
+        Report</a></div>
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body p-0">
+                <form id="frm_project_activity" action="{% url 'projects:index' %}" method="POST" autocomplete="off"
+                    novalidate>
+                    {% csrf_token %}
+                    <table class="table table-hover table-bordered table-sm m-0">
+                        <thead>
+                            <tr>
+                                <th>Activity Name</th>
+                                <th>Weightage</th>
+                                <th class="text-center">Progress</th>
+                                {% for list_year in list_years %}
+                                <th class="text-center">{{list_year.0}}<br>{{list_year.1}}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if activities %}
+                            {% for activity in activities %}
+                            <tr>
+                                <td>{{ activity.project_activity.name }}</td>
+                                <td>{{ activity.project_activity.weightage }}</td>
+                                <td class="text-center">100</td>
+                                {% for list_year in list_years %}
+                                <td class="text-center cell-border"
+                                    onclick="edit_plan('{{activity.project_activity.id}}','{{activity.project_activity.name}}','{{list_year.0}}','{{list_year.1}}')"
+                                    id="plan_activity_{{activity.project_activity.id}}_{{list_year.0}}_{{list_year.1}}">
+                                    {% for plan in activity.plans %}
+                                    {% if plan.plan_year|stringformat:'s' == list_year.0|stringformat:'s' and plan.plan_month|stringformat:'s' == list_year.1|stringformat:'s' %}
+                                    <span class="bg-warning badge p-2">{{plan.plan_value}}</span>
+                                    <br><span class="bg-info badge mt-1 p-2">{{plan.actual_value}}</span>
+                                    {% endif %}
+                                    {% endfor %}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="3" class="text-danger text-center">Project activity not found</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="modal" id="edit_plan_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="plan_title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="frm_project_activity" action="#" onsubmit="return false;" method="POST" autocomplete="off"
+                novalidate>
+                <div class="modal-body">
+                    <input type="hidden" id="plan_activity_id" name="plan_activity_id">
+                    <input type="hidden" id="plan_year" name="plan_year">
+                    <input type="hidden" id="plan_month" name="plan_month">
+                    <div class="form-group row">
+                        <label>Plan Value</label>
+                        <input type="text" id="plan_value" class="form-control" name="plan_value">
+                    </div>
+                    <div class="form-group row">
+                        <label>Actual Value</label>
+                        <input type="text" id="actual_value" class="form-control" name="actual_value">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href-"javascript:void(0);" class="btn btn-primary" onclick="save_plan();">Save</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function edit_plan(id, plan_title, _year, _month) {
+        $("#edit_plan_modal").modal('show');
+        $("#edit_plan_modal #plan_title").html(plan_title + " " + _year + "-" + _month);
+        $("#edit_plan_modal #plan_year").val(_year);
+        $("#edit_plan_modal #plan_month").val(_month);
+        $("#edit_plan_modal #plan_activity_id").val(id);
+        $("#edit_plan_modal #plan_value").val('');
+        $("#edit_plan_modal #actual_value").val('');
+        $.getJSON("{% url 'projects:get_project_activity_plan_by_year_month' %}?id=" + id + "&plan_year=" + _year +
+            "&plan_month=" + _month,
+            function (data) {
+                var _data = JSON.parse(data);
+                var fields = _data[0]["fields"]
+                $("#edit_plan_modal #plan_value").val(fields['plan_value']);
+                $("#edit_plan_modal #actual_value").val(fields['actual_value']);
+            })
+    }
+
+    function save_plan() {
+        var plan_year = $("#edit_plan_modal #plan_year").val();
+        var plan_month = $("#edit_plan_modal #plan_month").val();
+        var plan_activity_id = $("#edit_plan_modal #plan_activity_id").val();
+        var plan_value = $("#edit_plan_modal #plan_value").val();
+        var actual_value = $("#edit_plan_modal #actual_value").val();
+        $.getJSON("{% url 'projects:update_project_activity_plan' %}?plan_activity_id=" + plan_activity_id +
+            "&plan_year=" + plan_year +
+            "&plan_value=" + plan_value +
+            "&actual_value=" + actual_value +
+            "&plan_month=" + plan_month,
+            function (data) {
+                var _data = JSON.parse(data);
+                var fields = _data[0]["fields"]
+                $("#plan_activity_" + plan_activity_id + "_" + plan_year + "_" + plan_month).html('');
+                $("#plan_activity_" + plan_activity_id + "_" + plan_year + "_" + plan_month).html(
+                    '<span class="bg-warning badge p-2">' + fields['plan_value'] +
+                    '</span><br><span class="bg-info badge mt-1 p-2">' + fields['actual_value'] + ' </span>');
+                $("#edit_plan_modal").modal('hide');
+            });
+    }
+</script>
+{% endblock %}

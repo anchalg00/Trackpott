@@ -3,7 +3,6 @@ from django.core import serializers
 from django.http import JsonResponse, HttpResponse
 from .models import PurchaseOrder, PurchaseOrderItem
 from .forms import PurchaseOrderForm, PurchaseOrderItemForm
-from chart.models import Schedule
 from materials.models import Store
 from datetime import datetime
 from openpyxl import Workbook
@@ -13,8 +12,6 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def index(request):
-    project_selected = Schedule.objects.filter(is_selected=True)
-    selected_project = project_selected.first()
     initial_id = 0
     form = PurchaseOrderForm(request.POST or None)
     if request.method == 'POST':
@@ -40,25 +37,19 @@ def index(request):
     context = {
         "purchase_orders": queryset_list,
         "form": form,
-        "initial_id": initial_id,
-        'project_selected' : project_selected,
-        'project_list_first': selected_project
+        "initial_id": initial_id
     }
     return render(request, 'purchase_orders/manage_purchase_orders.html', context)
 
 
 @login_required
 def get_purchase_order(request, id):
-    project_selected = Schedule.objects.filter(is_selected=True)
-    selected_project = project_selected.first()
     purchase_order = PurchaseOrder.objects.filter(id=id)
     return JsonResponse(serializers.serialize("json", purchase_order), safe=False)
 
 
 @login_required
 def items(request, id):
-    project_selected = Schedule.objects.filter(is_selected=True)
-    selected_project = project_selected.first()
     initial_id = 0
     form = PurchaseOrderItemForm(request.POST or None)
     if request.method == 'POST':
@@ -81,25 +72,19 @@ def items(request, id):
         "purchase_order_items": PurchaseOrderItem.objects.filter(purchase_order_id=id).order_by('-id'),
         "form": form,
         "initial_id": initial_id,
-        "purchase_order": PurchaseOrder.objects.get(id=id),
-        'project_selected' : project_selected,
-        'project_list_first': selected_project
+        "purchase_order": PurchaseOrder.objects.get(id=id)
     }
     return render(request, 'purchase_orders/manage_purchase_order_items.html', context)
 
 
 @login_required
 def get_purchase_order_item(request, id):
-    project_selected = Schedule.objects.filter(is_selected=True)
-    selected_project = project_selected.first()
     purchase_order_item = PurchaseOrderItem.objects.filter(id=id)
     return JsonResponse(serializers.serialize("json", purchase_order_item), safe=False)
 
 
 @login_required
 def report(request):
-    project_selected = Schedule.objects.filter(is_selected=True)
-    selected_project = project_selected.first()
     queryset_list = PurchaseOrder.objects.order_by('-id')
     if 'delivery_date_from' in request.GET and request.GET['delivery_date_from'] != '':
         delivery_date_from = datetime.strptime(
@@ -114,9 +99,7 @@ def report(request):
             queryset_list = queryset_list.filter(
                 delivery_date__lte=delivery_date_to)
     context = {
-        'purchase_orders': queryset_list,
-        'project_selected' : project_selected,
-        'project_list_first': selected_project
+        'purchase_orders': queryset_list
     }
 
     if 'export' in request.GET and request.GET['export'] == 'excel':
@@ -171,8 +154,6 @@ def report(request):
 
 @login_required
 def addition_report(request):
-    project_selected = Schedule.objects.filter(is_selected=True)
-    selected_project = project_selected.first()
     queryset_list = PurchaseOrderItem.objects.order_by('-id')
     if 'item_id' in request.GET and request.GET['item_id'] != '':
         queryset_list = queryset_list.filter(item_id=request.GET['item_id'])
@@ -186,9 +167,7 @@ def addition_report(request):
             queryset_list = queryset_list.filter(created_at__lte=to_date)
     context = {
         'materials': Store.objects.all(),
-        'items': queryset_list,
-        'project_selected' : project_selected,
-        'project_list_first': selected_project
+        'items': queryset_list
     }
     if 'export' in request.GET and request.GET['export'] == 'excel':
         response = HttpResponse(
@@ -246,8 +225,6 @@ def addition_report(request):
 
 @login_required
 def pdf_report(request, id):
-    project_selected = Schedule.objects.filter(is_selected=True)
-    selected_project = project_selected.first()
     try:
         purchase_order = PurchaseOrder.objects.get(pk=id)
     except PurchaseOrder.DoesNotExist:
@@ -257,8 +234,6 @@ def pdf_report(request, id):
         purchase_order_id=id)
     context = {
         'purchase_order': purchase_order,
-        'purchase_order_items': purchase_order_items,
-        'project_selected' : project_selected,
-        'project_list_first': selected_project
+        'purchase_order_items': purchase_order_items
     }
     return Render.render('purchase_orders/pdf_report.html', context)

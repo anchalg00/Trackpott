@@ -4,6 +4,8 @@ from django.utils.translation import ugettext_lazy as _
 from treebeard.mp_tree import MP_Node
 from django.contrib.auth.models import AbstractBaseUser
 from django.conf import settings
+from materials.models import Store
+from django.utils import timezone
 # Create your models here.
 
 
@@ -14,16 +16,14 @@ def get_new_static_resource_path(instance, filename, folder_name=''):
 def get_new_task_file_resource_path(instance, filename):
     return get_new_static_resource_path(instance, filename, 'task')
 
-
 class Schedule(models.Model):
     name = models.CharField(max_length=250, null=True, blank=True)
-    contractor_name=models.ForeignKey(settings.AUTH_USER_MODEL,null=True,blank=True,on_delete=models.SET_NULL,related_name='contractor_name')
     description = models.TextField(null=True, blank=True)
     created = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now=True)
     duration = models.IntegerField(default=0)
-    start_date = models.DateField(null=True, blank=True)
-    end_date = models.DateField(null=True, blank=True)
+    start_date = models.DateField(null=True,default=None, blank=True)
+    end_date = models.DateField(null=True,default=None, blank=True)
     is_selected = models.BooleanField(default=False)
     can_write = models.BooleanField(default=True)
     can_write_on_parent = models.BooleanField(default=False)
@@ -73,7 +73,6 @@ class Task(models.Model):
     duration = models.IntegerField(default=0)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-
     parent = models.ForeignKey('self', null=True, blank=True, related_name='children',on_delete=models.CASCADE)
     level = models.IntegerField(default=0)
     depends = models.CharField(max_length=300, null=True,blank=True)
@@ -81,8 +80,7 @@ class Task(models.Model):
     is_milestone = models.BooleanField(default=False)
     end_is_milestone = models.BooleanField(default=False)
     resources = models.ManyToManyField('Resource', blank=True)
-    status = models.CharField(max_length=300,
-                              blank=True, null=True)
+    status = models.CharField(max_length=300,blank=True, null=True)
     progress = models.DecimalField(decimal_places=2, default=0, max_digits=10)
     remarks = models.CharField(max_length=300, null=True,blank=True)
     task_file = models.FileField(
@@ -94,7 +92,3 @@ class Task(models.Model):
 
     def __str__(self):
         return 'Task: %s' % self.name
-
-
-
-

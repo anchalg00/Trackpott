@@ -9,20 +9,17 @@ https://docs.djangoproject.com/en/2.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
-#for gmail
+# for gmail
+import os
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'anchalg00@gmail.com'
 EMAIL_HOST_PASSWORD = 'aryangupta'
 EMAIL_PORT = 587
 
-
-
-import os
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = "/media/"
 
 
@@ -49,13 +46,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'crispy_forms',
-
+    'mathfilters',
     'users',
-    'projects',
     'materials',
     # 'chartit' ,
     'chart',
-    'mathfilters',
+    'projects',
     'purchase_orders'
 
     # 'bokeh',
@@ -92,27 +88,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'trackpot.wsgi.application'
 
-AUTH_USER_MODEL = 'users.Account'
+
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'trackpott',
+        'USER': 'root',
+        'STORAGE_ENGINE': 'MyISAM / INNODB / ETC',
+        'PASSWORD': '',
     }
 }
 
-# }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'anchalgupta$trackpott',
-#         'USER': 'anchalgupta',
-#         'PASSWORD': 'anchal@1234',
-#         'HOST': 'anchalgupta.mysql.pythonanywhere-services.com',
-#     }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -152,17 +147,17 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIRS = [
 
-    os.path.join(BASE_DIR,'static'),
+    os.path.join(BASE_DIR, 'static'),
 
 ]
-CRISPY_TEMPLATE_PACK='bootstrap4'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'home'
-LOGIN_URL='login'
-
+LOGIN_URL = 'login'
 
 
 REPOSITORY_ROOT = os.path.dirname(BASE_DIR)
