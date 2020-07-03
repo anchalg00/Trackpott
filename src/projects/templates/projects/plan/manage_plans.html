@@ -1,0 +1,88 @@
+{% extends 'loggedbase.html' %}
+{% block title %}
+Manage Activity Plans for - {{schedule.name}} [{{project_activity.name}}]
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <b><a href="{% url 'projects:project_activity' %}" class="btn btn-link"><i class="fas fa-arrow-left"></i>
+                Back</a></b>
+        <div class="card">
+            <div class="card-body p-0">
+                {% for error in form.non_field_errors  %}
+                <p class="text-danger text-center font-weight-bold mt-2">{{ error }}</p>
+                {% endfor %}
+                <form id="frm_project-plan" action="{% url 'projects:plans' project_activity.id %}" method="POST"
+                    autocomplete="off" novalidate>
+                    {% csrf_token %}
+                    <table class="table table-sm">
+                        <tr>
+                            <input type="hidden" id="_id" name="_id" value="{{initial_id}}">
+                            <th colspan="3">{{form.plan_year}}<span
+                                    class="text-danger text-sm">{{form.plan_year.errors.as_text}}</span>
+                            </th>
+                            <th colspan="1">{{form.plan_month}}<span
+                                    class="text-danger text-sm">{{form.plan_month.errors.as_text}}</span>
+                            </th>
+                            <th colspan="1">{{form.plan_value}}<span
+                                    class="text-danger text-sm">{{form.plan_value.errors.as_text}}</span>
+                            </th>
+                            <th colspan="1">{{form.actual_value}}<span
+                                    class="text-danger text-sm">{{form.actual_value.errors.as_text}}</span>
+                            </th>
+                            <th><input type="submit" name="" id="" class="btn btn-primary" value="Save"></th>
+                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Activity Name</th>
+                                <th>Weightage</th>
+                                <th>Plan Year</th>
+                                <th>Plan Month</th>
+                                <th>Plan Value</th>
+                                <th>Actual Value</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for project_activity_plan in project_activity_plans %}
+                            <tr>
+                                <td>{{ project_activity_plan.project_activity.name }}</td>
+                                <td>{{ project_activity_plan.project_activity.weightage }}</td>
+                                <td>{{ project_activity_plan.plan_year }}</td>
+                                <td>{{ project_activity_plan.plan_month }}{% if project_activity_plan.is_plan_fixed %}&nbsp;&nbsp;<label
+                                        class="badge badge-warning">Plan Fixed</label>{% endif %}</td>
+                                <td>{{ project_activity_plan.plan_value }}</td>
+                                <td>{{ project_activity_plan.actual_value }}</td>
+                                <td class="text-center">
+                                    <i class="fa fa-pencil"
+                                        onclick="edit_project_activity_plan('{% url 'projects:get_project_activity_plan' project_activity_plan.id %}')"></i>
+                                    {% if project_activity_plan.is_plan_fixed == False %}&nbsp;&nbsp;<a
+                                        href="{% url 'projects:set_plan_fixed' project_activity_plan.id %}"
+                                        class="btn btn-primary btn-sm">Set Fixed</a>{% endif %}
+
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function edit_project_activity_plan(url) {
+        $.getJSON(url,
+            function (data) {
+                console.log(data)
+                var _data = JSON.parse(data);
+                var __data = _data[0]['fields'];
+                $("#_id").val(_data[0].pk);
+                $("#id_plan_year").val(__data.plan_year);
+                $("#id_plan_month").val(__data.plan_month);
+                $("#id_plan_value").val(__data.plan_value);
+                $("#id_actual_value").val(__data.actual_value);
+            })
+    }
+</script>
+{% endblock %}

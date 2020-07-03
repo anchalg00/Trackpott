@@ -1,0 +1,95 @@
+{% extends 'loggedbase.html' %}
+{% block title %}
+Revise Plans
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body p-0">
+                <h5 class="pt-2 pl-2"><i class="fa fa-search"></i> Search Plans</h5>
+                <hr>
+                <form class="form-horizontal p-2" action="{% url 'projects:revise_plans' %}" method="GET"
+                    autocomplete="off" novalidate>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Project Name</label>
+                                <select name="project" id="project" class="form-control">
+                                    <option></option>
+                                    {% for schedule in schedules %}
+                                    <option value="{{schedule.id}}"
+                                        {% if request.GET.project == schedule.id|stringformat:"i" %}selected{%endif%}>
+                                        {{schedule.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Activity Name</label>
+                                <input type="text" id="activity_name" name="activity_name" class="form-control"
+                                    value="{{request.GET.activity_name}}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <a href="{% url 'projects:revise_plans' %}" class="btn btn-default btn-outline">Reset</a>
+                    </div>
+                </form>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Project Name</th>
+                            <th>Activity</th>
+                            <th>Plan Year</th>
+                            <th>Plan Month</th>
+                            <th>Plan Value</th>
+                            <th width="15%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%if project_activity_plans %}
+                        {% for project_activity_plan in project_activity_plans %}
+                        <tr>
+                            <td>{{ project_activity_plan.project_activity.schedule.name }}</td>
+                            <td>{{ project_activity_plan.project_activity.name }}</td>
+                            <td>{{ project_activity_plan.plan_year }}</td>
+                            <td>{{ project_activity_plan.plan_month }}</td>
+                            <td>{{ project_activity_plan.plan_value }}</td>
+                            <td>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="plan_{{project_activity_plan.id}}"
+                                        value="{{project_activity_plan.plan_value}}">
+                                    <div class="input-group-append">
+                                        <a href="javascript:void(0);"
+                                            onclick="revise_plan('{% url 'projects:revise_plan' project_activity_plan.id %}','{{project_activity_plan.id}}')"
+                                            class="btn btn-success">Revise</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {%else%}
+                        <tr>
+                            <td colspan="4">Request not found</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function revise_plan(url, id) {
+        var plan_value = $("#plan_" + id).val();
+        if (plan_value == '' && plan_value == 0) {
+            alert('Please enter the value')
+        } else {
+            window.location = url + "?plan_value=" + plan_value;
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends 'loggedbase.html' %}
+{% block title %}
+Manage activity for {{schedule.name}}
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        Revisor
+        <select name="user_id" id="user_id" onchange="update_revisor(this.value);">
+            <option value="">Select the Revisor</option>
+            {%for user in users%}
+            <option value="{{user.id}}" {% if revisor.revisor_id == user.id %}Selected{% endif %}>{{user.username}}
+            </option>
+            {%endfor%}
+        </select>
+        <a href="{% url 'projects:excel_activity' %}" class="btn btn-info">Switch Excel View</a>
+        <a href="{% url 'projects:chart_report' %}" class="btn btn-primary">Chart Report</a>
+        {% comment %} <a href="{% url 'projects:edit_activity' %}" class="btn btn-default">Edit Activity</a>
+        {% endcomment %}
+        <br>
+        <br>
+        <div class="card">
+            <div class="card-body p-0">
+                <h5 class="pt-2 pl-2"><i class="fa fa-search"></i> Search Activity</h5>
+                <hr>
+                <form class="form-horizontal p-2" action="{% url 'projects:project_activity' %}" method="GET"
+                    autocomplete="off" novalidate>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Activity Name</label>
+                                <input type="text" id="name" name="name" class="form-control"
+                                    value="{{request.GET.name}}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <a href="{% url 'projects:project_activity' %}" class="btn btn-default btn-outline">Reset</a>
+                    </div>
+                </form>
+                {% if total_weightage.weightage__sum > 100 %}
+                <h4 class="text-danger text-center font-weight-bold">Total Weightage is
+                    {{total_weightage.weightage__sum}}</h4>
+                {% else %}
+                <h4 class="text-success text-center font-weight-bold">Total Weightage is
+                    {{total_weightage.weightage__sum}}</h4>
+                {% endif %}
+                <form id="frm_project" action="{% url 'projects:project_activity' %}" method="POST" autocomplete="off"
+                    novalidate>
+                    {% csrf_token %}
+                    <table class="table table-sm">
+                        <tr>
+                            <input type="hidden" id="_id" name="_id" value="{{initial_id}}">
+                            <input type="hidden" id="revisor_id" name="revisor_id" value="{{revisor.revisor_id}}">
+                            <th>{{form.name}}<span class="text-danger text-sm">{{form.name.errors.as_text}}</span>
+                            </th>
+                            <th>{{form.weightage}}<span
+                                    class="text-danger text-sm">{{form.weightage.errors.as_text}}</span>
+                            </th>
+                            <th><input type="submit" name="" id="" class="btn btn-primary" value="Save"></th>
+                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Activity Name</th>
+                                <th>Weightage</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if project_activities%}
+                            {% for project_activity in project_activities %}
+                            <tr>
+                                <td>{{ project_activity.name }}</td>
+                                <td>{{ project_activity.weightage }}</td>
+                                <td class="text-center">
+                                    <i class="fa fa-pencil"
+                                        onclick="edit_project_activity('{% url 'projects:get_project_activity' project_activity.id %}')"></i>
+                                    <a href="{% url 'projects:plans' project_activity.id %}"><i
+                                            class="ml-2 fa fa-link"></i> View Plans</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="3" class="text-danger text-center">Project activity not found</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function update_revisor(user) {
+        if (user != "") {
+            window.location = "{% url 'projects:update_revisor' schedule.id %}?user_id=" + user;
+        }
+    }
+</script>
+<script>
+    function edit_project_activity(url) {
+        $.getJSON(url,
+            function (data) {
+                var _data = JSON.parse(data);
+                var __data = _data[0]['fields'];
+                $("#_id").val(_data[0]['pk']);
+                $("#id_name").val(__data.name);
+                $("#id_weightage").val(__data.weightage);
+            })
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'loggedbase.html' %}
+{% block title %}
+Create activity for {{schedule.name}}
+{% endblock %}
+{% block content %}
+<section class="content">
+    <form class="form-horizontal" method="POST" action="{% url 'projects:create_activity' %}">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        {%for err in formset.non_form_errors%}
+        <div class="text-danger text-center">{{err}}</div>
+        {% endfor %}
+        <table class="table table-bordered" id="activity_table">
+            <thead>
+                <tr>
+                    <td>Activity Name</td>
+                    <td>Weightage</td>
+                    <td>Action</td>
+                </tr>
+            </thead>
+            <tbody id="activity_table">
+                {% for form in formset %}
+                <tr>
+                    <td>{{form.name}}</td>
+                    <td>{{form.weightage}}</td>
+                    <td class="text-center"><a href="javascript:void(0);"><i
+                                class="fa fa-trash text-danger delete_row"></i></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="javascript:void(0);" class="btn btn-info" onclick="add_new_row()">Add new row</a>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</section>
+{% endblock %}
+{% block js_scripts%}
+<script type='text/javascript'>
+    function resetTable() {
+        $('table#activity_table tr').each(function (index) {
+            if (index != 0) {
+                var $newHiddenInput = $(this).find('input[type="hidden"]');
+                $newHiddenInput.attr('name', 'form-' + Number(index - 1) + '-id')
+                $newHiddenInput.attr('id', 'id_form-' + Number(index - 1) + '-id')
+                var $newNameInput = $(this).find('input.form-name[type="text"]');
+                $newNameInput.attr('name', 'form-' + Number(index - 1) + '-name')
+                $newNameInput.attr('id', 'id_form-' + Number(index - 1) + '-name')
+                var $newWInput = $(this).find('input.form-weightage[type="text"]');
+                $newWInput.attr('name', 'form-' + Number(index - 1) + '-weightage')
+                $newWInput.attr('id', 'id_form-' + Number(index - 1) + '-weightage')
+            }
+        })
+    }
+    $(document).ready(function () {
+        $("#activity_table").on('click', '.delete_row', function () {
+            $(this).closest('tr').remove();
+            var last_row = $("#activity_table tbody tr:nth-last-child(1)").html();
+            var _last_row = $("#activity_table tbody tr:nth-last-child(1) td:nth-child(1)").html();
+            var _id = $.parseHTML(_last_row)[0].id;
+            _id = _id.substring(8)
+            _id = _id.slice(0, -5);
+            nextId = Number(_id) + 1;
+            $('#id_form-TOTAL_FORMS').val(Number(nextId) - 1);
+            resetTable();
+        });
+    });
+
+    function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    function replaceAll(str, term, replacement) {
+        return str.replace(new RegExp(escapeRegExp(term), 'g'), replacement);
+    }
+
+    function add_new_row() {
+        var last_row = $("#activity_table tbody tr:nth-last-child(1)").html();
+        var _last_row = $("#activity_table tbody tr:nth-last-child(1) td:nth-child(1)").html();
+        var _id = $.parseHTML(_last_row)[0].id;
+        _id = _id.substring(8)
+        _id = _id.slice(0, -5);
+        nextId = Number(_id) + 1;
+        var updatedHTML = replaceAll(last_row, "form-" + _id, "form-" + nextId)
+        $("#activity_table tbody").append("<tr>" + updatedHTML + "</tr>");
+        $('#id_form-TOTAL_FORMS').val(Number(nextId) + 1);
+    }
+</script>
+{% endblock %}

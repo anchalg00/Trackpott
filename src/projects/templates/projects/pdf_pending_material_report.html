@@ -60,12 +60,6 @@
                 <th>Address</th>
                 <th>Delivery Date</th>
                 <th>Item Name</th>
-                <th>Spec</th>
-                <th>Material</th>
-                <th>Rating</th>
-                <th>Size</th>
-                <th>Sch</th>
-                <th>Facing</th>
                 <th>Quantity</th>
             </tr>
         </thead>
@@ -77,19 +71,6 @@
             <td>{{ pending_item.project.address }}</td>
             <td>{{ pending_item.project.delivery_date }}</td>
             <td>{{ pending_item.item }}</td>
-            <td>{{ pending_item.item.spec_s}}</td>
-            <td>{{ pending_item.item.material_s}}</td>
-            <td>{{ pending_item.item.rating_s}}</td>
-            <td>{{ pending_item.item.size1_s}}</td>
-            <td>{{ pending_item.item.sch1_s}}</td>
-            <td>{{ pending_item.item.facing_s}}</td>
-
-
-
-
-
-
-
             <td align="center">{{ pending_item.quantity }}</td>
         </tr>
         {% endfor %}

@@ -1,0 +1,76 @@
+{% extends 'loggedbase.html' %}
+{% block title %}
+Revised Plan Report
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body p-0">
+                <h5 class="pt-2 pl-2"><i class="fa fa-search"></i> Search Plans</h5>
+                <hr>
+                <form class="form-horizontal p-2" action="{% url 'projects:revise_plans' %}" method="GET"
+                    autocomplete="off" novalidate>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Project Name</label>
+                                <select name="project" id="project" class="form-control">
+                                    <option></option>
+                                    {% for schedule in schedules %}
+                                    <option value="{{schedule.id}}"
+                                        {% if request.GET.project == schedule.id|stringformat:"i" %}selected{%endif%}>
+                                        {{schedule.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Activity Name</label>
+                                <input type="text" id="activity_name" name="activity_name" class="form-control"
+                                    value="{{request.GET.activity_name}}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <a href="{% url 'projects:revise_plans' %}" class="btn btn-default btn-outline">Reset</a>
+                    </div>
+                </form>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Project Name</th>
+                            <th>Activity</th>
+                            <th>Plan Year</th>
+                            <th>Plan Month</th>
+                            <th>Plan Value</th>
+                            <th>Revised by</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%if project_activity_plan_logs %}
+                        {% for project_activity_plan_log in project_activity_plan_logs %}
+                        <tr>
+                            <td>{{ project_activity_plan_log.project_activity_plan.project_activity.schedule.name }}
+                            </td>
+                            <td>{{ project_activity_plan_log.project_activity_plan.project_activity.name }}</td>
+                            <td>{{ project_activity_plan_log.project_activity_plan.plan_year }}</td>
+                            <td>{{ project_activity_plan_log.project_activity_plan.plan_month }}</td>
+                            <td>{{ project_activity_plan_log.project_activity_plan.plan_value }}</td>
+                            <td>{{ project_activity_plan_log.created_by.username }}</td>
+                        </tr>
+                        {% endfor %}
+                        {%else%}
+                        <tr>
+                            <td colspan="4">Request not found</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

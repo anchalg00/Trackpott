@@ -1,0 +1,26 @@
+{%extends 'base.html'%}
+
+{% load crispy_forms_tags %}
+{%block content%}
+
+
+<div class="jumbotron">
+<h1 id="loginh1">Register</h1>
+<form method="POST" id="login" >
+  {%csrf_token%}
+
+  <fieldset class="form group">
+  {{form|crispy}}
+  </fieldset>
+  
+  <div class="form-group">
+    <button type="submit" class="btn btn-outline-info">Sign Up</button>
+  </div>
+   <div class="border-top pt-3">
+            <small class="text-muted">
+                Already Have An Account? <a class="ml-2" href="{% url 'login'%}">Sign In</a>
+            </small>
+        </div>
+</form>
+</div>
+{%endblock%}

@@ -6,14 +6,11 @@ from openpyxl import Workbook
 from helpers.Render import Render
 from .models import Store
 from .forms import MaterialForm
-from chart.models import Schedule
 from django.contrib.auth.decorators import login_required
 
 
 @login_required
 def index(request):
-    project_selected = Schedule.objects.filter(is_selected=True)
-    selected_project = project_selected.first()
     initial_id = 0
     form = MaterialForm(request.POST or None)
     if request.method == 'POST':
@@ -48,25 +45,19 @@ def index(request):
     context = {
         "materials": materials,
         "form": form,
-        "initial_id": initial_id,
-        'project_selected' : project_selected,
-        'project_list_first': selected_project
+        "initial_id": initial_id
     }
     return render(request, 'materials/manage_materials.html', context)
 
 
 @login_required
 def get_material(request, id):
-    project_selected = Schedule.objects.filter(is_selected=True)
-    selected_project = project_selected.first()
     store = Store.objects.filter(id=id)
     return JsonResponse(serializers.serialize("json", store), safe=False)
 
 
 @login_required
 def excel_export(request):
-    project_selected = Schedule.objects.filter(is_selected=True)
-    selected_project = project_selected.first()
     queryset_list = Store.objects.raw("""
     SELECT
         *,
